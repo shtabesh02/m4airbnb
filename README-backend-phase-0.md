@@ -5,21 +5,54 @@ installing dependencies, setting up Sequelize, initializing your Express
 application, connecting Express security middlewares, and testing your server
 setup.
 
-## Backend and Frontend Separation
+## Create a project folder and a README for your project
 
-In this project, you will separate the backend Express code from the frontend
-React code.
+Great projects should always be accompanied by great READMEs! For this project,
+your `README.md` file will include the API documentation and the database schema
+for the API project that you are implementing.
 
-Create a folder called `authenticate-me`. Inside that folder, create two more
-folders called `backend` and `frontend`.
+Go to your main Slack channel and download the zip file containing the API
+documentation and database schema of your chosen application sent as a pinned
+message by an instructor. 
 
-Your file structure should look like this:
+On your system, create a folder in your system for your Mod 4 portfolio project.
+The name of your folder should be the name of your project.
 
-```plaintext
-authenticate-me
-├── backend
-└── frontend
+> **IMPORTANT NOTE**: The name of your project should **NOT** have the word
+> "Clone" or the name of the application that you are cloning.
+
+Within the root of your new project directory, create a file called `README.md`.
+Copy over the contents API documentation file for your chosen application from
+the downloaded zip file into the `README.md` file. The `README.md` file should
+be at the root of the project directory. By implementing this naming convention,
+GitHub will utilize this file to be displayed on the main page of your repository
+when you push this project to GitHub. Learn more about
+[GitHub READMEs here][github-readmes].
+
+Create an `images` folder at the root of your project directory.  Find your
+chosen application's database schema image inside the downloaded zip file and
+add it to the `images` folder in your project directory. Insert the image into
+the database schema placeholder under `'Database Schema Design'` section of your
+`README.md` file using markdown syntax.
+
+The top of your `README.md` file should look something like this: 
+
+```markdown
+# [title]
+
+## Database Schema Design
+
+![db-schema]
+
+[db-schema]: ./images/example.png
+
+## API Documentation
 ```
+
+Replace `[title]` with the name of your project. Also, replace `example.png` with
+the name of your image found in your `images` folder.
+
+[github-readmes]: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes
 
 ## `.gitignore`
 
@@ -44,7 +77,7 @@ git config --global init.defaultBranch main
 ```
 
 Initiate Git in the project folder by running the following command in the
-`authenticate-me` folder:
+root directory of your project folder:
 
 ```bash
 git init
@@ -57,7 +90,7 @@ what the name of your website will be).
 **Note**: Make sure the GitHub repo that you create is "Public", NOT "Private".
 
 Connect your remote repository to your local repository by running the following
-command in the `authenticate-me` folder:
+command in the root directory:
 
 ```bash
 git remote add origin <github-remote-url>
@@ -73,8 +106,8 @@ git add .
 git status
 ```
 
-Confirm that the files to be added include the `.gitignore` file that you
-created.
+Confirm that the files to be added include the `README.md` and `.gitignore` files
+that you created.
 
 Commit the changes:
 
@@ -88,7 +121,29 @@ Push the commit to the GitHub remote repository:
 git push origin main
 ```
 
-Confirm that you see the `.gitignore` file on GitHub.
+Confirm that you see the `README.md` and `.gitignore` file on GitHub.
+
+After pushing to GitHub, the `README.md` file should now be rendered as the
+repository's main page.
+
+## Backend and Frontend Separation
+
+In this project, you will separate the backend Express code from the frontend
+React code.
+
+Inside of the root directory of your project folder, create two folders called
+`backend` and `frontend`.
+
+Your file structure should look like this:
+
+```plaintext
+.
+├── backend/
+├── frontend/
+├── images/
+├── .gitignore
+└── README.md
+```
 
 ## Dependencies
 
