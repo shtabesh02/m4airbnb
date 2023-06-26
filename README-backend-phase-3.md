@@ -64,8 +64,8 @@ You will be making commits to this branch until the end of this phase.
 
 ## Dependencies
 
-Run `npm install bcryptjs` to install dependency that you will be using to hash
-passwords.
+`cd` into the `backend` folder and run `npm install bcryptjs` to install
+the dependency that you will be using to hash passwords.
 
 ## Database Schema for the Users Table
 
