@@ -104,7 +104,7 @@ the options object as the first argument, with the appropriate `tableName` prope
 If completed correctly, your migration file should look something like this:
 
 ```js
-"use strict";
+'use strict';
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -112,8 +112,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Users", {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -146,7 +146,8 @@ module.exports = {
       }
     }, options);
   },
-  down: async (queryInterface, Sequelize) => {
+
+  async down(queryInterface, Sequelize) {
     options.tableName = "Users";
     return queryInterface.dropTable(options);
   }
@@ -202,6 +203,7 @@ Your `user.js` file should look like this with the applied constraints:
 
 ```js
 'use strict';
+
 const { Model, Validator } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -216,6 +218,7 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           len: [4, 30],
           isNotEmail(value) {
@@ -228,6 +231,7 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
           len: [3, 256],
           isEmail: true
@@ -272,6 +276,8 @@ Your seeder file should look something like this:
 
 ```js
 'use strict';
+
+const { User } = require('../models');
 const bcrypt = require("bcryptjs");
 
 let options = {};
@@ -280,9 +286,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    options.tableName = 'Users';
-    return queryInterface.bulkInsert(options, [
+  async up (queryInterface, Sequelize) {
+    await User.bulkCreate([
       {
         email: 'demo@user.io',
         username: 'Demo-lition',
@@ -298,10 +303,10 @@ module.exports = {
         username: 'FakeUser2',
         hashedPassword: bcrypt.hashSync('password3')
       }
-    ], {});
+    ], { validate: true });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  async down (queryInterface, Sequelize) {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
@@ -309,6 +314,7 @@ module.exports = {
     }, {});
   }
 };
+
 ```
 
 Notice how you do not need to add the `createdAt` and `updatedAt` fields for the
