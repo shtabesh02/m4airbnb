@@ -2,6 +2,10 @@
 const express = require('express');
 const router = express.Router();
 
+// importing routes from api/index
+const apiRouter = require('./api');
+router.use('/api', apiRouter);
+
 
 
 // router.get('/hello/world', function(req, res) {
