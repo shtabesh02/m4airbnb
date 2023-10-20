@@ -1,5 +1,27 @@
 // backend/routes/api/index.js
+const express = require('express');
+const { Op } = require('sequelize');
+const bcrypt = require('bcryptjs');
+
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { User } = require('../../db/models');
+// const { requireAuth } = require('../../utils/auth.js');
+// const { setTokenCookie } = require('../../utils/auth.js');
+// const { restoreUser } = require("../../utils/auth.js");
+
+
+
+
 const router = require('express').Router();
+const sessionRouter = require('./session.js');
+const usersRouter = require('./users.js');
+
+
+router.use(restoreUser);
+
+router.use('/session', sessionRouter);
+
+router.use('/users', usersRouter);
 
 // Test the API router
 router.post('/test', function(req, res) {
@@ -10,8 +32,7 @@ router.post('/test', function(req, res) {
 
 
 // GET /api/set-token-cookie
-const { setTokenCookie } = require('../../utils/auth.js');
-const { User } = require('../../db/models');
+// const { User } = require('../../db/models');
 router.get('/set-token-cookie', async (_req, res) => {
   const user = await User.findOne({
     where: {
@@ -25,9 +46,7 @@ router.get('/set-token-cookie', async (_req, res) => {
 
 
 // GET /api/restore-user
-const { restoreUser } = require('../../utils/auth.js');
 
-router.use(restoreUser);
 
 router.get(
   '/restore-user',
@@ -40,7 +59,7 @@ router.get(
 
 
 // GET /api/require-auth
-const { requireAuth } = require('../../utils/auth.js');
+
 router.get(
   '/require-auth',
   requireAuth,
