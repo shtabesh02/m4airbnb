@@ -68,6 +68,10 @@ router.get(
   }
 );
 
+router.get('/session', (req,res) => {
+
+})
+
 
 
 module.exports = router;
