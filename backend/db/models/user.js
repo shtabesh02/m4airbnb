@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: [3, 256],
           isEmail: true
+          
         }
       },
       hashedPassword: {
