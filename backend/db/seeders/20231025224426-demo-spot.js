@@ -32,7 +32,7 @@ module.exports = {
       previewImage: "image url"
     },
     {
-      ownerId: 2,
+      ownerId: 1,
       address: "222 Disney Lane",
       city: "San Francisco",
       state: "California",
