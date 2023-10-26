@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User, Spot, SpotImage } = require('../../db/models');
 // const { requireAuth } = require('../../utils/auth.js');
 // const { setTokenCookie } = require('../../utils/auth.js');
 // const { restoreUser } = require("../../utils/auth.js");
@@ -68,6 +68,65 @@ router.get(
   }
 );
 
+// Get all Spots
+router.get('/spots', async (req, res) => {
+  const spots = await Spot.findAll();
 
+  res.status(200);
+  res.json({
+    Spots: spots
+  })
+});
+
+// Get all Spots owned by the Current User
+router.get('/spots/current', async (req, res) => {
+  const userId = await req.user.id;
+
+  const spots = await Spot.findAll({
+    where: {
+      ownerId: userId
+    }
+  });
+
+  res.status(200);
+  res.json({
+    Spots: spots
+  })
+});
+
+
+// Get details of a Spot from an id
+router.get('/spots/:spotId', async (req, res) => {
+  const spotId = parseInt(req.params.spotId);
+  const spotDetails = await Spot.findByPk(spotId, {
+    include: [
+      {
+        model: SpotImage,
+        attributes: ['id', 'url', 'preview']
+      },
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      }
+
+    ],
+  });
+
+  res.json({
+    Spots: spotDetails
+  })
+});
+
+// Create a Spot
+router.post('/spots',requireAuth , async (req, res) => {
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    
+    const spot = await Spot.create({ address, city, state, country, lat, lng, name, description, price});
+
+    return res.json({
+      spot
+    });
+  }
+);
 
 module.exports = router;
