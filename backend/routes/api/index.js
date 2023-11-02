@@ -149,7 +149,7 @@ const validateSpots = [
   handleValidationErrors
 ];
 
-router.get('/spots', async (req, res) => {
+router.get('/spots', validateSpots, async (req, res) => {
   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
   
   page = Number(page);
