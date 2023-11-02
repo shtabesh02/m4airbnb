@@ -13,20 +13,35 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Booking.belongsTo(models.User, {
         foreignKey: 'userId',
-        onDelete: 'cascade'
+        // onDelete: 'cascade'
       });
 
       Booking.belongsTo(models.Spot, {
         foreignKey: 'spotId',
-        onDelete: 'cascade'
+        // onDelete: 'cascade'
       })
     }
   }
   Booking.init({
-    spotId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    spotId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    endDate: {
+      type: DataTypes.DATE,
+      validate: {
+        afterStart(value){
+          if(value < this.startDate){
+            throw new Error('endDate cannot be on or before startDate')
+          }
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Booking',

@@ -18,7 +18,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users'
-        }
+        },
+        onDelete: 'cascade',
+        allowNull: false
       },
       address: {
         type: Sequelize.STRING

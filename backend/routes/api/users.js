@@ -26,6 +26,12 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.'),
+  check('firstName')
+    .notEmpty()
+    .withMessage('First Name is required'),
+  check('lastName')
+    .notEmpty()
+    .withMessage('Last Name is required'),
   check('password')
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
@@ -34,12 +40,33 @@ const validateSignup = [
 ];
 
 // Sign up
-router.post(
-    '/',
-    validateSignup,
-    async (req, res) => {
+router.post('/', validateSignup, async (req, res) => {
       const { email, password, username, firstName, lastName } = req.body;
       const hashedPassword = bcrypt.hashSync(password);
+      // Check if the users already exists
+
+      const existingEmail = await User.findOne({where: {email}});
+      const existingUsername = await User.findOne({where: {username}});
+
+      if(existingEmail){
+        res.status(500);
+        res.json({
+          "message": "User already exists",
+          "errors": {
+            "email": "User with that email already exists"
+          }
+        });
+      }
+
+      if(existingUsername){
+        res.status(500);
+        res.json({
+          "message": "User already exists",
+          "errors": {
+            "username": "User with that username already exists"
+          }
+        });
+      }
       const user = await User.create({ username, email, hashedPassword, firstName, lastName});
   
       const safeUser = {
@@ -47,13 +74,13 @@ router.post(
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        username: user.username,
+        // username: user.username,
         // hashedPassword: user.hashedPassword,
       };
 
       await setTokenCookie(res, safeUser);
 
-      // Check if the users already exists
+      
 
       return res.json({
         user: safeUser
@@ -63,3 +90,28 @@ router.post(
   
 
 module.exports = router;
+
+
+
+// Pre-made validation
+/*
+const validateSignup = [
+  check('email')
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage('Please provide a valid email.'),
+  check('username')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 4 })
+    .withMessage('Please provide a username with at least 4 characters.'),
+  check('username')
+    .not()
+    .isEmail()
+    .withMessage('Username cannot be an email.'),
+  check('password')
+    .exists({ checkFalsy: true })
+    .isLength({ min: 6 })
+    .withMessage('Password must be 6 characters or more.'),
+  handleValidationErrors
+];
+*/

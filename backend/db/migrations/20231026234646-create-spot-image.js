@@ -21,6 +21,7 @@ module.exports = {
         references: {
           model: 'Spots'
         },
+        onDelete: 'cascade',
         allowNull: false
       },
       url: {
