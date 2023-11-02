@@ -151,7 +151,7 @@ const validateSpots = [
 
 router.get('/spots', async (req, res) => {
   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
-  
+  //
   page = Number(page);
   size = Number(size);
 
