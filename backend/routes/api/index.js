@@ -151,31 +151,10 @@ const validateSpots = [
 
 router.get('/spots', validateSpots, async (req, res) => {
   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
-  //
-  page = Number(page);
-  size = Number(size);
 
-
-
-  if(page < 1 || page > 10){
-    page = 1;
-  }
-  if(size < 1 || size > 20){
-    size = 20;
-  }
-
-  let spots;
-
-  if(page && size){
-    spots = await Spot.findAll({offset: size * (page - 1), limit: size});
-    res.status(200);
-    res.json({
-      spots,
-      page,
-      size
-  })
-  }else{
-    spots = await Spot.findAll({
+  if((page === undefined) && (size === undefined)){
+    // no query
+    const spots = await Spot.findAll({
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
       'description', 'price', 'createdAt','updatedAt',
       [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
@@ -215,11 +194,46 @@ router.get('/spots', validateSpots, async (req, res) => {
                 previewImage: previewImage,
               };
             });
-    res.status(200);
-    res.json({
+    res.status(200).json({
       // spots,
       Spots: formattedSpots
     });
+  }else{
+  page = Number(page);
+  size = Number(size);
+
+  if(page < 1 || page > 10){
+    throw new Error('Page must be greater than or equal to 1');
+  }
+  if(size < 1 || size > 20){
+    throw new Error('Size must be greater than or equal to 1');
+  }
+  if(maxLat < -90 || maxLat > 90){
+    throw new Error('Maximum latitude must be less than or equal to 90');
+  }
+  if(minLat < -90 || minLat > 90){
+    throw new Error('Minimum latitude must be greater than or equal to -90');
+  }
+  if(maxLng < -180 || maxLng > 180){
+    throw new Error('Minimum longitude must be greater than or equal to -180');
+  }
+  if(minLng < -180 && minLng > 180){
+    throw new Error('Maximum longitude must be less than or equal to 180');
+  }
+  if(minPrice < 0 || minPrice > 100){
+    throw new Error('Minimum price must be greater than or equal to 0');
+  }
+  if(maxPrice < 0 && maxPrice > 100){
+    throw new Error('Maximum price must be less than or equal to 100');
+  }
+
+    const spots = await Spot.findAll({offset: size * (page - 1), limit: size});
+
+    res.status(200).json({
+      spots,
+      page,
+      size
+  });
   }
 });
 
