@@ -7,7 +7,11 @@ const apiRouter = require('./api');
 router.use('/api', apiRouter);
 
 
-
+router.get('/', async (req, res) => {
+  res.json({
+    "message": "Wlecome to this page. Currently it's under maintenance...!"
+  });
+})
 // router.get('/hello/world', function(req, res) {
 //   res.cookie('XSRF-TOKEN', req.csrfToken());
 //   res.send('Hello World!');

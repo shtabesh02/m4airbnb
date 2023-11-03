@@ -85,69 +85,6 @@ router.get(
 //   })
 // });
 
-const validateSpots = [
-  check('page')
-    // .notEmpty()
-    .custom(value => {
-      if(value >= 1){
-        return true;
-      }else{
-        throw new Error('Page must be greater than or equal to 1');
-      }
-    }),
-  check('size')
-    // .notEmpty()
-    .custom(value => {
-      if(value >= 1){
-        return true;
-      }else{
-        throw new Error('Size must be greater than or equal to 1');
-      }
-    }),
-  check('maxLat')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) <= 90) {
-        return true;
-      }
-      throw new Error('Maximum latitude must be less than or equal to 90');
-    }),
-  check('minLat')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) >= -90) {
-        return true;
-      }
-      throw new Error('Minimum latitude must be greater than or equal to -90');
-    }),
-  check('minLng')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) >= -180) {
-        return true;
-      }
-      throw new Error('Minimum longitude must be greater than or equal to -180');
-    }),
-  check('maxLng')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) <= 180) {
-        return true;
-      }
-      throw new Error('Maximum longitude must be less than or equal to 180');
-    }),
-  check('minPrice')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) >= 0) {
-        return true;
-      }
-      throw new Error('Minimum price must be greater than or equal to 0');
-    }),
-  check('maxPrice')
-    .custom((value) => {
-      if (value === undefined || parseFloat(value) <= 100) {
-        return true;
-      }
-      throw new Error('Maximum price must be less than or equal to 100');
-    }),
-  handleValidationErrors
-];
 
 router.get('/spots', async (req, res) => {
   let {page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query;
