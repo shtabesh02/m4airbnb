@@ -8,9 +8,8 @@ router.use('/api', apiRouter);
 
 
 router.get('/', async (req, res) => {
-  res.json({
-    "message": "Wlecome to this page. Currently it's under maintenance...!"
-  });
+  const msg = '<h1>Wlecome to this page. Currently it is under maintenance...!</h1>';
+  res.status(200).json(msg);
 })
 // router.get('/hello/world', function(req, res) {
 //   res.cookie('XSRF-TOKEN', req.csrfToken());
