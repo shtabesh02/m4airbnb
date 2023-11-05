@@ -72,7 +72,6 @@ router.get(
   }
 );
 
-
 // Get all Spots
 // Add Query Filters to Get All Spots
 router.get('/spots', async (req, res) => {
