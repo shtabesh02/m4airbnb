@@ -14,17 +14,17 @@ module.exports = {
       {
         firstName: 'Mohammadjan',
         lastName: 'Farasu',
-        email: 'demo@user.io',
-        username: 'Demo-lition',
-        hashedPassword: bcrypt.hashSync('password'),
+        email: 'user1@user.io',
+        username: 'mfarasu',
+        hashedPassword: bcrypt.hashSync('password1'),
         firstName: 'Mohammadjan',
         lastName: 'Farasu'
       },
       {
         firstName: 'Alisins',
         lastName: 'Danesh',
-        email: 'user1@user.io',
-        username: 'FakeUser1',
+        email: 'user2@user.io',
+        username: 'adanesh',
         hashedPassword: bcrypt.hashSync('password2'),
         firstName: 'Alisina',
         lastName: 'Danesh'
@@ -32,8 +32,8 @@ module.exports = {
       {
         firstName: 'Sharif',
         lastName: 'Rezaie',
-        email: 'user2@user.io',
-        username: 'FakeUser2',
+        email: 'user3@user.io',
+        username: 'srezaie',
         hashedPassword: bcrypt.hashSync('password3'),
         firstName: 'Sharif',
         lastName: 'Rezaie'

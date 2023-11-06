@@ -75,60 +75,116 @@ router.get(
 // Get all Spots
 // Add Query Filters to Get All Spots
 router.get('/spots', async (req, res) => {
-  let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+  // Query parameters
+  let page = parseInt(req.query.page);
+  let size = parseInt(req.query.size);
+  const minLat = parseFloat(req.query.minLat);
+  const maxLat = parseFloat(req.query.maxLat);
+  const minLng = parseFloat(req.query.minLng);
+  const maxLng = parseFloat(req.query.maxLng);
+  const minPrice = parseFloat(req.query.minPrice);
+  const maxPrice = parseFloat(req.query.maxPrice);
+
+  const validationErrors = {};
+
+  // let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
 
   if (page || size) {
     page = Number(page);
     size = Number(size);
 
-    if (page < 1 || page > 10) {
-      throw new Error('Page must be greater than or equal to 1');
-    }
-    if (size < 1 || size > 20) {
-      throw new Error('Size must be greater than or equal to 1');
-    }
-
-    const spots = await Spot.findAll({
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
-        'description', 'price', 'createdAt', 'updatedAt',
-        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
-
-      include: [
-        { model: Review, attributes: [] },
-        { model: SpotImage, attributes: ['url', 'preview'] }
-      ],
-      group: ['Spot.id'],
-
-      subQuery: false,
-
-      offset: size * (page - 1), limit: size
-    });
-
-    const spots_result = [];
-    spots.forEach(spot => {
-      spots_result.push(spot.toJSON())
-    });
-
-    spots_result.forEach(spot => {
-      spot.SpotImages.forEach(img => {
-        if (img.preview === true) {
-          spot.previewImage = img.url;
-        }
-      });
-      if (!spot.previewImage) {
-        spot.previewImage = 'No image to preview'
+    // Page & Size validation
+    const validatePage = (page) => {
+      if (page < 1 || page > 10) {
+        validationErrors.page = 'Page must be between 1 and 10';
       }
-      delete spot.SpotImages
-    });
+    };
+  
+    const validateSize = (size) => {
+      if (size < 1 || size > 20) {
+        validationErrors.size = 'Size must be between 1 and 20';
+      }
+    };
+  
+    validatePage(page);
+    validateSize(size);
 
-    res.status(200).json({
-      Spots: spots_result,
-      page,
-      size
-    });
-
+    if(Object.keys(validationErrors).length > 0){
+      return res.status(400).json({
+        message: 'Bad Request',
+        validationErrors,
+      });
+    }else{
+      const spots = await Spot.findAll({
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
+          'description', 'price', 'createdAt', 'updatedAt',
+          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
+  
+        include: [
+          { model: Review, attributes: [] },
+          { model: SpotImage, attributes: ['url', 'preview'] }
+        ],
+        group: ['Spot.id'],
+  
+        subQuery: false,
+  
+        offset: size * (page - 1), limit: size
+      });
+  
+      const spots_result = [];
+      spots.forEach(spot => {
+        spots_result.push(spot.toJSON())
+      });
+  
+      spots_result.forEach(spot => {
+        spot.SpotImages.forEach(img => {
+          if (img.preview === true) {
+            spot.previewImage = img.url;
+          }
+        });
+        if (!spot.previewImage) {
+          spot.previewImage = 'No image to preview'
+        }
+        delete spot.SpotImages
+      });
+  
+      res.status(200).json({
+        Spots: spots_result,
+        page,
+        size
+      });
+    }
   } else if (maxLat || minLat || maxLng || minLng || minPrice || maxPrice) {
+    // Validating query parameters
+    const paramsValidation = {};
 
+    if (minLat !== undefined && (minLat < -90 || minLat > 90)) {
+    paramsValidation.minLat = 'Minimum latitude is invalid';
+  }
+  if (maxLat !== undefined && (maxLat < -90 || maxLat > 90)) {
+    paramsValidation.maxLat = 'Maximum latitude is invalid';
+  }
+  if (minLng !== undefined && (minLng < -180 || minLng > 180)) {
+    paramsValidation.minLng = 'Minimum longitude is invalid';
+  }
+  if (maxLng !== undefined && (maxLng < -180 || maxLng > 180)) {
+    paramsValidation.maxLng = 'Maximum longitude is invalid';
+  }
+  if (minPrice !== undefined && (minPrice < 0)) {
+    paramsValidation.minPrice = 'Minimum price must be greater than or equal to 0';
+  }
+  if (maxPrice !== undefined && (maxPrice < 0)) {
+    paramsValidation.maxPrice = 'Maximum price must be greater than or equal to 0';
+  }
+    // End of validations
+
+    if(Object.keys(paramsValidation).length > 0){
+      return res.status(400).json({
+        message: 'Bad Request',
+        paramsValidation,
+      });
+    }else{
     const spots = await Spot.findAll({
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
         'description', 'price', 'createdAt', 'updatedAt',
@@ -167,6 +223,7 @@ router.get('/spots', async (req, res) => {
     res.status(200).json({
       Spots: spots_result,
     });
+  }
 
   } else {
     const spots = await Spot.findAll({
@@ -308,6 +365,8 @@ router.post('/spots', requireAuth, async (req, res) => {
 // Add an Image to a Spot based on the Spot's id
 router.post('/spots/:spotId/images', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
+
+  console.log('rererer: ', spotId)
   const { url, preview } = req.body;
 
   const _spotId = await Spot.findOne({
