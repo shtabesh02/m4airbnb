@@ -18,7 +18,7 @@ const { User, Spot, SpotImage, Review, ReviewImage, Booking, Sequelize } = requi
 const router = require('express').Router();
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
-const { model } = require('mongoose');
+
 
 
 router.use(restoreUser);
