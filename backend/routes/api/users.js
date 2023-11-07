@@ -13,6 +13,9 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 
+
+
+
 const validateSignup = [
   check('email')
     .exists({ checkFalsy: true })
