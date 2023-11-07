@@ -317,10 +317,13 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
         'description', 'price', 'createdAt', 'updatedAt',
         [Sequelize.fn('COUNT', Sequelize.col('Reviews.stars')), 'numReviews'],
         [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
+
       include: [
         { model: Review, attributes: [] },
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
-        { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] }
+        { model: User,
+          //  as: 'Owner', 
+           attributes: ['id', 'firstName', 'lastName'] }
       ],
       group: ['Spot.id', 'SpotImages.id']
     });
