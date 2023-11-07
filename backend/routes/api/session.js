@@ -25,60 +25,107 @@ const validateLogin = [
 
 
 
-// Log in
-router.post('/', validateLogin, async (req, res, next) => {
-      const { credential, password } = req.body;
+// Log in (customized)
+// backend/routes/api/session.js
+// ...
 
-        const user = await User.unscoped().findOne({
-          where: {
-            [Op.or]: {
-              username: credential,
-              email: credential
-            }
-          }
-        });
+// Log in
+router.post(
+  '/',
+  validateLogin,
+  async (req, res, next) => {
+    const { credential, password } = req.body;
+
+    const user = await User.unscoped().findOne({
+      where: {
+        [Op.or]: {
+          username: credential,
+          email: credential
+        }
+      }
+    });
+
+    if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+      const err = new Error('Login failed');
+      err.status = 401;
+      err.title = 'Login failed';
+      err.errors = { credential: 'The provided credentials were invalid.' };
+      delete err.stack;
+      return next(err);
+    }
+
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username
+    };
+
+    await setTokenCookie(res, safeUser);
+
+    return res.json({
+      user: safeUser
+    });
+  }
+);
+// Login (original)
+// router.post('/', validateLogin, async (req, res, next) => {
+//       const { credential, password } = req.body;
+
+//         const user = await User.unscoped().findOne({
+//           where: {
+//             [Op.or]: {
+//               username: credential,
+//               email: credential
+//             }
+//           }
+//         });
     
 
-        if(!user){
-          const ve = {
-            message: 'Invalid credentials'
-          }
-          return res.status(401).json(ve);
-        }
+//         if(!user){
+//           const ve = {
+//             message: 'Invalid credentials'
+//           }
+//           return res.status(401).json(ve);
+//         }
 
-        if (!bcrypt.compareSync(password, user.hashedPassword.toString())) {
-          const ve = {
-            message: 'Bad Request',
-            error: {
-              credential: 'Email or username is required',
-              password: 'Password is required'
-            }
-          };
-          return res.status(400).json(ve);
+//         if (!bcrypt.compareSync(password, user.hashedPassword.toString())) {
+//           const ve = {
+//             message: 'Bad Request',
+//             error: {
+//               credential: 'Email or username is required',
+//               password: 'Password is required'
+//             }
+//           };
+//           // deleting stack
+//           delete ve.stack;
+
+//           return res.status(401).json(ve);
 
           
-          // const err = new Error('Login failed');
-          // err.status = 401;
-          // err.title = 'Login failed';
-          // err.errors = { credential: 'The provided credentials were invalid.' };
-          // return next(err);
-        }
+//           // const err = new Error('Login failed');
+//           // err.status = 401;
+//           // err.title = 'Login failed';
+//           // err.errors = { credential: 'The provided credentials were invalid.' };
+//           // return next(err);
+//         }
     
-        const safeUser = {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          // username: user.username,
-        };
+//         const safeUser = {
+//           id: user.id,
+//           firstName: user.firstName,
+//           lastName: user.lastName,
+//           email: user.email,
+//           // username: user.username,
+//         };
     
-        await setTokenCookie(res, safeUser);
+//         await setTokenCookie(res, safeUser);
     
-        return res.json({
-          user: safeUser
-        });
-    }
-  );
+//         return res.json({
+//           user: safeUser
+//         });
+//     }
+//   );
 
 
 
