@@ -125,7 +125,7 @@ router.get('/spots', async (req, res) => {
           { model: Review, attributes: [] },
           { model: SpotImage, attributes: ['url', 'preview'] }
         ],
-        group: ['Spot.id'],
+        group: ['Spot.id', 'SpotImages.id'],
   
         subQuery: false,
   
@@ -198,7 +198,7 @@ router.get('/spots', async (req, res) => {
         { model: Review, attributes: [] },
         { model: SpotImage, attributes: ['url', 'preview'] }
       ],
-      group: ['Spot.id']
+      group: ['Spot.id', 'SpotImages.id']
     });
 
     console.log('Spots: ', spots);
@@ -277,7 +277,7 @@ router.get('/spots/current', requireAuth, async (req, res) => {
       { model: Review, attributes: [] },
       { model: SpotImage, attributes: ['url', 'preview'] }
     ],
-    group: ['Spot.id']
+    group: ['Spot.id', 'SpotImages.id']
   });
 
   // customized output
