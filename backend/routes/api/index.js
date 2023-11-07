@@ -236,7 +236,7 @@ router.get('/spots', async (req, res) => {
         { model: SpotImage, attributes: ['url', 'preview'] }
       ],
       group: ['Spot.id',
-        // 'SpotImages.url'
+        'SpotImages.url'
       ]
     });
 
