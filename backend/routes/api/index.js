@@ -751,7 +751,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
         }
       });
       res.status(200).json({
-        booking
+        Bookings: booking
       });
     } else {
       const booking = await Booking.findOne({
@@ -886,9 +886,7 @@ router.put('/bookings/:bookingId', requireAuth, async (req, res) => {
             }
           });
 
-          res.status(200).json({
-            _newBooking
-          });
+          return res.status(200).json(_newBooking);
         } else {
           res.status(403).json({
             "message": "Sorry, this spot is already booked for the specified dates"
@@ -900,7 +898,7 @@ router.put('/bookings/:bookingId', requireAuth, async (req, res) => {
           error.errors.forEach(e => {
             ve[e.path] = e.message
           });
-          res.status(400).json({
+          return res.status(400).json({
             message: "Bad Request",
             errors: ve
           });
@@ -908,7 +906,7 @@ router.put('/bookings/:bookingId', requireAuth, async (req, res) => {
       }
     }
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       "message": "Booking couldn't be found"
     });
   }
