@@ -8,18 +8,10 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User, Spot, SpotImage, Review, ReviewImage, Booking, Sequelize } = require('../../db/models');
-// const { requireAuth } = require('../../utils/auth.js');
-// const { setTokenCookie } = require('../../utils/auth.js');
-// const { restoreUser } = require("../../utils/auth.js");
-
-
-
 
 const router = require('express').Router();
 const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
-
-
 
 router.use(restoreUser);
 
@@ -31,9 +23,6 @@ router.use('/users', usersRouter);
 router.post('/test', function (req, res) {
   res.json({ requestBody: req.body });
 });
-
-
-
 
 // GET /api/set-token-cookie
 // const { User } = require('../../db/models');
@@ -47,10 +36,7 @@ router.get('/set-token-cookie', async (_req, res) => {
   return res.json({ user: user });
 });
 
-
-
 // GET /api/restore-user
-
 
 router.get(
   '/restore-user',
@@ -58,9 +44,6 @@ router.get(
     return res.json(req.user);
   }
 );
-
-
-
 
 // GET /api/require-auth
 
@@ -100,43 +83,43 @@ router.get('/spots', async (req, res) => {
         validationErrors.page = 'Page must be between 1 and 10';
       }
     };
-  
+
     const validateSize = (size) => {
       if (size < 1 || size > 20) {
         validationErrors.size = 'Size must be between 1 and 20';
       }
     };
-  
+
     validatePage(page);
     validateSize(size);
 
-    if(Object.keys(validationErrors).length > 0){
+    if (Object.keys(validationErrors).length > 0) {
       return res.status(400).json({
         message: 'Bad Request',
         validationErrors,
       });
-    }else{
+    } else {
       const spots = await Spot.findAll({
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
           'description', 'price', 'createdAt', 'updatedAt',
           [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
-  
+
         include: [
           { model: Review, attributes: [] },
           { model: SpotImage, attributes: ['url', 'preview'] }
         ],
         group: ['Spot.id', 'SpotImages.id'],
-  
+
         subQuery: false,
-  
+
         offset: size * (page - 1), limit: size
       });
-  
+
       const spots_result = [];
       spots.forEach(spot => {
         spots_result.push(spot.toJSON())
       });
-  
+
       spots_result.forEach(spot => {
         spot.SpotImages.forEach(img => {
           if (img.preview === true) {
@@ -148,7 +131,7 @@ router.get('/spots', async (req, res) => {
         }
         delete spot.SpotImages
       });
-  
+
       res.status(200).json({
         Spots: spots_result,
         page,
@@ -160,70 +143,69 @@ router.get('/spots', async (req, res) => {
     const paramsValidation = {};
 
     if (minLat !== undefined && (minLat < -90 || minLat > 90)) {
-    paramsValidation.minLat = 'Minimum latitude is invalid';
-  }
-  if (maxLat !== undefined && (maxLat < -90 || maxLat > 90)) {
-    paramsValidation.maxLat = 'Maximum latitude is invalid';
-  }
-  if (minLng !== undefined && (minLng < -180 || minLng > 180)) {
-    paramsValidation.minLng = 'Minimum longitude is invalid';
-  }
-  if (maxLng !== undefined && (maxLng < -180 || maxLng > 180)) {
-    paramsValidation.maxLng = 'Maximum longitude is invalid';
-  }
-  if (minPrice !== undefined && (minPrice < 0)) {
-    paramsValidation.minPrice = 'Minimum price must be greater than or equal to 0';
-  }
-  if (maxPrice !== undefined && (maxPrice < 0)) {
-    paramsValidation.maxPrice = 'Maximum price must be greater than or equal to 0';
-  }
+      paramsValidation.minLat = 'Minimum latitude is invalid';
+    }
+    if (maxLat !== undefined && (maxLat < -90 || maxLat > 90)) {
+      paramsValidation.maxLat = 'Maximum latitude is invalid';
+    }
+    if (minLng !== undefined && (minLng < -180 || minLng > 180)) {
+      paramsValidation.minLng = 'Minimum longitude is invalid';
+    }
+    if (maxLng !== undefined && (maxLng < -180 || maxLng > 180)) {
+      paramsValidation.maxLng = 'Maximum longitude is invalid';
+    }
+    if (minPrice !== undefined && (minPrice < 0)) {
+      paramsValidation.minPrice = 'Minimum price must be greater than or equal to 0';
+    }
+    if (maxPrice !== undefined && (maxPrice < 0)) {
+      paramsValidation.maxPrice = 'Maximum price must be greater than or equal to 0';
+    }
     // End of validations
 
-    if(Object.keys(paramsValidation).length > 0){
+    if (Object.keys(paramsValidation).length > 0) {
       return res.status(400).json({
         message: 'Bad Request',
         paramsValidation,
       });
-    }else{
-    const spots = await Spot.findAll({
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
-        'description', 'price', 'createdAt', 'updatedAt',
-        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
-      where: {
-        price: { [Op.between]: [minPrice, maxPrice] },
-        lat: { [Op.between]: [minLat, maxLat] },
-        lng: { [Op.between]: [minLng, maxLng] }
-      },
-      include: [
-        { model: Review, attributes: [] },
-        { model: SpotImage, attributes: ['url', 'preview'] }
-      ],
-      group: ['Spot.id', 'SpotImages.id']
-    });
-
-    console.log('Spots: ', spots);
-
-    const spots_result = [];
-    spots.forEach(spot => {
-      spots_result.push(spot.toJSON())
-    });
-
-    spots_result.forEach(spot => {
-      spot.SpotImages.forEach(img => {
-        if (img.preview === true) {
-          spot.previewImage = img.url;
-        }
+    } else {
+      const spots = await Spot.findAll({
+        attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
+          'description', 'price', 'createdAt', 'updatedAt',
+          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
+        where: {
+          price: { [Op.between]: [minPrice, maxPrice] },
+          lat: { [Op.between]: [minLat, maxLat] },
+          lng: { [Op.between]: [minLng, maxLng] }
+        },
+        include: [
+          { model: Review, attributes: [] },
+          { model: SpotImage, attributes: ['url', 'preview'] }
+        ],
+        group: ['Spot.id', 'SpotImages.id']
       });
-      if (!spot.previewImage) {
-        spot.previewImage = 'No image to preview'
-      }
-      delete spot.SpotImages
-    });
 
-    res.status(200).json({
-      Spots: spots_result,
-    });
-  }
+
+      const spots_result = [];
+      spots.forEach(spot => {
+        spots_result.push(spot.toJSON())
+      });
+
+      spots_result.forEach(spot => {
+        spot.SpotImages.forEach(img => {
+          if (img.preview === true) {
+            spot.previewImage = img.url;
+          }
+        });
+        if (!spot.previewImage) {
+          spot.previewImage = 'No image to preview'
+        }
+        delete spot.SpotImages
+      });
+
+      res.status(200).json({
+        Spots: spots_result,
+      });
+    }
 
   } else {
     const spots = await Spot.findAll({
@@ -242,6 +224,7 @@ router.get('/spots', async (req, res) => {
     spots.forEach(spot => {
       spots_result.push(spot.toJSON())
     });
+
 
     spots_result.forEach(spot => {
       spot.SpotImages.forEach(img => {
@@ -321,16 +304,16 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
       include: [
         { model: Review, attributes: [] },
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
-        { model: User,
-          //  as: 'Owner', 
-           attributes: ['id', 'firstName', 'lastName'] }
+        {
+          model: User,
+           as: 'Owner', 
+          attributes: ['id', 'firstName', 'lastName']
+        }
       ],
       group: ['Spot.id', 'SpotImages.id']
     });
 
-    res.status(200).json({
-      Spots: spotDetails
-    })
+    res.status(200).json(spotDetails)
   } else {
     res.status(404).json(
       {
@@ -345,9 +328,7 @@ router.post('/spots', requireAuth, async (req, res) => {
   const ownerId = req.user.id;
   try {
     const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
-    res.status(201).json({
-      spot
-    });
+    res.status(201).json(spot);
   } catch (error) {
     if (error.name === 'SequelizeValidationError') {
       const ve = {};
@@ -365,9 +346,8 @@ router.post('/spots', requireAuth, async (req, res) => {
 
 // Add an Image to a Spot based on the Spot's id
 router.post('/spots/:spotId/images', requireAuth, async (req, res) => {
-  const spotId = req.params.spotId;
 
-  console.log('rererer: ', spotId)
+  const spotId = req.params.spotId;
   const { url, preview } = req.body;
 
   const _spotId = await Spot.findOne({
@@ -407,16 +387,14 @@ router.put('/spots/:spotId', requireAuth, async (req, res) => {
         });
 
       const updatedSpot = await Spot.findByPk(spotId);
-      return res.status(200).json({
-        updatedSpot
-      })
+      return res.status(200).json(updatedSpot);
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
         const ve = {};
         error.errors.forEach(e => {
           ve[e.path] = e.message;
         });
-        res.status(400).json({
+        return res.status(400).json({
           message: "Bad Request",
           errors: ve
         });
@@ -475,7 +453,6 @@ router.get('/reviews/current', requireAuth, async (req, res) => {
   reviews.forEach(review => {
     reviews_output.push(review.toJSON());
   });
-  console.log('Review output: ', reviews_output);
 
   reviews_output.forEach(review => {
     review.Spot.SpotImages.forEach(img => {
@@ -535,22 +512,18 @@ router.post('/spots/:spotId/reviews', requireAuth, async (req, res) => {
 
     const existingSpot = await Spot.findByPk(spotId);
 
-    let currentReview;
-
     if (existingSpot) {
       try {
         const _review = await Review.create({ spotId, userId, review, stars });
         const { id } = _review;
 
-        currentReview = await Review.findAll({
+        const currentReview = await Review.findAll({
           where: {
             id
           }
         });
 
-        res.status(201).json({
-          currentReview
-        });
+        return res.status(201).json(currentReview[0]);
 
       } catch (error) {
         if (error.name === 'SequelizeValidationError') {
@@ -598,24 +571,19 @@ router.post('/reviews/:reviewId/images', requireAuth, async (req, res) => {
     if (maxImage <= 10) {
       const image = await ReviewImage.create({ reviewId, url });
 
-      const result = await ReviewImage.findAll({
-        attributes: ['id', 'url'],
-        where: {
-          id: reviewId
-        }
-      });
-
-      res.status(200).json({
-        result
-      });
+      const img = {
+        id: image.id,
+        url: image.url
+      }
+      return res.status(200).json(img);
     } else {
-      res.status(403).json({
+      return res.status(403).json({
         "message": "Maximum number of images for this resource was reached."
       });
     }
 
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       "message": "Review couldn't be found"
     });
   }
@@ -668,16 +636,14 @@ router.put('/reviews/:reviewId', requireAuth, async (req, res) => {
           id: reviewId
         }
       });
-      res.status(200).json({
-        newReview: {
+      return res.status(200).json({
           id: reviewId,
-          spotId: spotId.spotId,
           userId: userId.userId,
+          spotId: spotId.spotId,
           review,
           stars,
           createdAt: created['createdAt'],
           updatedAt: updated['updatedAt']
-        }
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
@@ -733,7 +699,7 @@ router.get('/bookings/current', requireAuth, async (req, res) => {
     },
     include: [
       {
-        model: Spot,
+        model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
         include: { model: SpotImage, attributes: ['url', 'preview'] }
       },
 
@@ -758,9 +724,8 @@ router.get('/bookings/current', requireAuth, async (req, res) => {
     delete booking.Spot.SpotImages
   });
 
-  res.status(200).json({
-    myResult
-  });
+  console.log('myResult: ', myResult)
+  res.status(200).json({Bookings: myResult});
 });
 
 // Get all Bookings for a Spot based on the Spot's id

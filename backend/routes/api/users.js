@@ -52,7 +52,7 @@ router.post('/', validateSignup, async (req, res) => {
       const existingUsername = await User.findOne({where: {username}});
 
       if(existingEmail){
-        res.status(500).json({
+        return res.status(500).json({
           "message": "User already exists",
           "errors": {
             "email": "User with that email already exists"
@@ -61,8 +61,7 @@ router.post('/', validateSignup, async (req, res) => {
       }
 
       if(existingUsername){
-        res.status(500);
-        res.json({
+        return res.status(500).json({
           "message": "User already exists",
           "errors": {
             "username": "User with that username already exists"
@@ -82,9 +81,7 @@ router.post('/', validateSignup, async (req, res) => {
 
       await setTokenCookie(res, safeUser);
 
-      
-
-      return res.json({
+      return res.status(200).json({
         user: safeUser
       });
     }
