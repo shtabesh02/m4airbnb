@@ -6,6 +6,9 @@ const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+const { sequelize } = require('sequelize');
+
+
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { User, Spot, SpotImage, Review, ReviewImage, Booking, Sequelize } = require('../../db/models');
 
@@ -102,8 +105,8 @@ router.get('/spots', async (req, res) => {
       const spots = await Spot.findAll({
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
           'description', 'price', 'createdAt', 'updatedAt',
-          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
-
+          [sequelize.fn('AVG', sequelize.col('Reviews.stars')), 'avgRating']],
+// sequelize.fn is with lower case
         include: [
           { model: Review, attributes: [] },
           { model: SpotImage, attributes: ['url', 'preview'] }
@@ -305,8 +308,7 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
         { model: Review, attributes: [] },
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
         {
-          model: User,
-           as: 'Owner', 
+          model: User, as: 'Owner', 
           attributes: ['id', 'firstName', 'lastName']
         }
       ],
@@ -445,7 +447,7 @@ router.get('/reviews/current', requireAuth, async (req, res) => {
       },
       { model: ReviewImage, attributes: ['id', 'url'] }
     ],
-    group: ['Review.id', 'ReviewImages.id']
+    // group: ['Review.id', 'ReviewImages.id', 'Users.id']
   });
 
   // customized output
@@ -734,9 +736,6 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
 
   const spotId = req.params.spotId;
 
-  console.log('Logged In User: ', loggedInUser);
-  console.log('Spot Id: ', spotId);
-
   const _spotId = await Spot.findByPk(spotId);
 
   if (_spotId) {
@@ -747,7 +746,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
           spotId
         },
         include: {
-          model: User, attributes: ['id', 'firstName', 'lastName']
+          model: User, attributes: ['id', 'firstName', 'lastName'],
         }
       });
       res.status(200).json({
@@ -764,14 +763,11 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
         Bookings: booking
       });
     }
-
   } else {
     res.status(404).json({
       "message": "Spot couldn't be found"
     });
   }
-
-
 });
 
 // Create a Booking from a Spot based on the Spot's id
