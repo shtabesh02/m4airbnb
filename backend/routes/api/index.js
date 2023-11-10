@@ -109,9 +109,10 @@ router.get('/spots', async (req, res) => {
 // sequelize.fn is with lower case
         include: [
           { model: Review, attributes: [] },
-          { model: SpotImage, attributes: ['url', 'preview'] }
+          { model: SpotImage, attributes: ['url', 'preview'] },
+          { model: User, as: 'Owner', attributes: [] }
         ],
-        group: ['Spot.id', 'SpotImages.id'],
+        // group: ['Spot.id', 'SpotImages.id'],
 
         subQuery: false,
 
@@ -182,9 +183,10 @@ router.get('/spots', async (req, res) => {
         },
         include: [
           { model: Review, attributes: [] },
-          { model: SpotImage, attributes: ['url', 'preview'] }
+          { model: SpotImage, attributes: ['url', 'preview'] },
+          { model: User, as: 'Owner', attributes: [] }
         ],
-        group: ['Spot.id', 'SpotImages.id']
+        // group: ['Spot.id', 'SpotImages.id']
       });
 
 
@@ -218,16 +220,16 @@ router.get('/spots', async (req, res) => {
 
       include: [
         { model: Review, attributes: [] },
-        { model: SpotImage, attributes: ['id', 'url', 'preview'] }
+        { model: SpotImage, attributes: ['id', 'url', 'preview'] },
+        { model: User, as: 'Owner', attributes: [] }
       ],
-      group: ['Spot.id', 'SpotImages.id']
+      // group: ['Spot.id', 'SpotImages.id']
     });
 
     const spots_result = [];
     spots.forEach(spot => {
       spots_result.push(spot.toJSON())
     });
-
 
     spots_result.forEach(spot => {
       spot.SpotImages.forEach(img => {
@@ -261,9 +263,10 @@ router.get('/spots/current', requireAuth, async (req, res) => {
 
     include: [
       { model: Review, attributes: [] },
-      { model: SpotImage, attributes: ['url', 'preview'] }
+      { model: SpotImage, attributes: ['url', 'preview'] },
+      { model: User, as: 'Owner', attributes: [] }
     ],
-    group: ['Spot.id', 'SpotImages.id']
+    // group: ['Spot.id', 'SpotImages.id']
   });
 
   // customized output
@@ -307,12 +310,9 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
       include: [
         { model: Review, attributes: [] },
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
-        {
-          model: User, as: 'Owner', 
-          attributes: ['id', 'firstName', 'lastName']
-        }
+        { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] }
       ],
-      group: ['Spot.id', 'SpotImages.id']
+      // group: ['Spot.id', 'SpotImages.id']
     });
 
     res.status(200).json(spotDetails)
@@ -484,7 +484,7 @@ router.get('/spots/:spotId/reviews', async (req, res) => {
         spotId
       },
       include: [
-        { model: User, attributes: ['id', 'firstName', 'lastName'] },
+        { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] },
         { model: ReviewImage, attributes: ['id', 'url'] }
       ]
     });
@@ -746,7 +746,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
           spotId
         },
         include: {
-          model: User, attributes: ['id', 'firstName', 'lastName'],
+          model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'],
         }
       });
       res.status(200).json({
