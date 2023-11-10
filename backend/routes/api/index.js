@@ -448,7 +448,7 @@ router.get('/reviews/current', requireAuth, async (req, res) => {
         include: { model: SpotImage } },
       { model: ReviewImage, attributes: ['id', 'url'] }
     ],
-    group: ['Review.id', 'ReviewImages.id', 'User.id']
+    group: ['Review.id', 'ReviewImages.id', 'User.id', 'Spot.id', 'SpotImages.id']
   });
 
   // customized output
