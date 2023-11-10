@@ -112,12 +112,7 @@ router.get('/spots', async (req, res) => {
           { model: SpotImage, attributes: ['url', 'preview'] },
           { model: User, as: 'Owner', attributes: [] }
         ],
-        // group: ['Spot.id', 'SpotImages.id'],
-        group: [
-          'Spot.id', 'Spot.ownerId', 'Spot.address', 'Spot.city', 'Spot.state', 'Spot.country',
-          'Spot.lat', 'Spot.lng', 'Spot.name', 'Spot.description', 'Spot.price',
-          'Spot.createdAt', 'Spot.updatedAt'
-        ],        
+        // group: ['Spot.id', 'SpotImages.id'],       
 
         subQuery: false,
 
@@ -192,11 +187,7 @@ router.get('/spots', async (req, res) => {
           { model: User, as: 'Owner', attributes: [] }
         ],
         // group: ['Spot.id', 'SpotImages.id']
-        group: [
-          'Spot.id', 'Spot.ownerId', 'Spot.address', 'Spot.city', 'Spot.state', 'Spot.country',
-          'Spot.lat', 'Spot.lng', 'Spot.name', 'Spot.description', 'Spot.price',
-          'Spot.createdAt', 'Spot.updatedAt'
-        ]
+        group: ['Spot.id', 'Reviews.id', 'SpotImages.id', 'Owner.id'],
         
       });
 
@@ -235,11 +226,6 @@ router.get('/spots', async (req, res) => {
         { model: User, as: 'Owner', attributes: [] }
       ],
       // group: ['Spot.id', 'SpotImages.id']
-      group: [
-        'Spot.id', 'Spot.ownerId', 'Spot.address', 'Spot.city', 'Spot.state', 'Spot.country',
-        'Spot.lat', 'Spot.lng', 'Spot.name', 'Spot.description', 'Spot.price',
-        'Spot.createdAt', 'Spot.updatedAt'
-      ]
       
     });
 
@@ -284,12 +270,6 @@ router.get('/spots/current', requireAuth, async (req, res) => {
       { model: User, as: 'Owner', attributes: [] }
     ],
     // group: ['Spot.id', 'SpotImages.id']
-    group: [
-      'Spot.id', 'Spot.ownerId', 'Spot.address', 'Spot.city', 'Spot.state', 'Spot.country',
-      'Spot.lat', 'Spot.lng', 'Spot.name', 'Spot.description', 'Spot.price',
-      'Spot.createdAt', 'Spot.updatedAt'
-    ]
-    
   });
 
   // customized output
@@ -336,12 +316,6 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
         { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] }
       ],
       // group: ['Spot.id', 'SpotImages.id']
-      group: [
-        'Spot.id', 'Spot.ownerId', 'Spot.address', 'Spot.city', 'Spot.state', 'Spot.country',
-        'Spot.lat', 'Spot.lng', 'Spot.name', 'Spot.description', 'Spot.price',
-        'Spot.createdAt', 'Spot.updatedAt'
-      ]
-      
     });
 
     res.status(200).json(spotDetails)
