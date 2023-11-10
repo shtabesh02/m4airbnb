@@ -106,7 +106,7 @@ router.get('/spots', async (req, res) => {
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
           'description', 'price', 'createdAt', 'updatedAt',
           [sequelize.fn('AVG', sequelize.col('Reviews.stars')), 'avgRating']],
-// sequelize.fn is with lower case
+        // sequelize.fn is with lower case
         include: [
           { model: Review, attributes: [] },
           { model: SpotImage, attributes: ['url', 'preview'] },
@@ -188,7 +188,7 @@ router.get('/spots', async (req, res) => {
         ],
         // group: ['Spot.id', 'SpotImages.id']
         // group: ['Spot.id', 'Reviews.id', 'SpotImages.id', 'Owner.id'],
-        
+
       });
 
 
@@ -225,8 +225,8 @@ router.get('/spots', async (req, res) => {
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
         { model: User, as: 'Owner', attributes: [] }
       ],
-      // group: ['Spot.id', 'SpotImages.id']
-      
+      group: ['Spot.id', 'SpotImages.id']
+
     });
 
     const spots_result = [];
@@ -642,13 +642,13 @@ router.put('/reviews/:reviewId', requireAuth, async (req, res) => {
         }
       });
       return res.status(200).json({
-          id: reviewId,
-          userId: userId.userId,
-          spotId: spotId.spotId,
-          review,
-          stars,
-          createdAt: created['createdAt'],
-          updatedAt: updated['updatedAt']
+        id: reviewId,
+        userId: userId.userId,
+        spotId: spotId.spotId,
+        review,
+        stars,
+        createdAt: created['createdAt'],
+        updatedAt: updated['updatedAt']
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
@@ -730,7 +730,7 @@ router.get('/bookings/current', requireAuth, async (req, res) => {
   });
 
   console.log('myResult: ', myResult)
-  res.status(200).json({Bookings: myResult});
+  res.status(200).json({ Bookings: myResult });
 });
 
 // Get all Bookings for a Spot based on the Spot's id
