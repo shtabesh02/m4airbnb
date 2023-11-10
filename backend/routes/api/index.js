@@ -112,7 +112,7 @@ router.get('/spots', async (req, res) => {
           { model: SpotImage, attributes: ['url', 'preview'] },
           { model: User, as: 'Owner', attributes: [] }
         ],
-        // group: ['Spot.id', 'SpotImages.id'],       
+        group: ['Spot.id', 'SpotImages.id'],       
 
         subQuery: false,
 
@@ -186,7 +186,7 @@ router.get('/spots', async (req, res) => {
           { model: SpotImage, attributes: ['url', 'preview'] },
           { model: User, as: 'Owner', attributes: [] }
         ],
-        // group: ['Spot.id', 'SpotImages.id']
+        group: ['Spot.id', 'SpotImages.id']
         // group: ['Spot.id', 'Reviews.id', 'SpotImages.id', 'Owner.id'],
 
       });
@@ -315,7 +315,7 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
         { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] }
       ],
-      // group: ['Spot.id', 'SpotImages.id']
+      group: ['Spot.id', 'SpotImages.id']
     });
 
     res.status(200).json(spotDetails)
@@ -450,7 +450,7 @@ router.get('/reviews/current', requireAuth, async (req, res) => {
       },
       { model: ReviewImage, attributes: ['id', 'url'] }
     ],
-    // group: ['Review.id', 'ReviewImages.id', 'Users.id']
+    group: ['Review.id', 'ReviewImages.id', 'Users.id']
   });
 
   // customized output
