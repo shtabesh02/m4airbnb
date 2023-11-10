@@ -269,7 +269,7 @@ router.get('/spots/current', requireAuth, async (req, res) => {
       { model: SpotImage, attributes: ['url', 'preview'] },
       { model: User, as: 'Owner', attributes: [] }
     ],
-    // group: ['Spot.id', 'SpotImages.id']
+    group: ['Spot.id', 'SpotImages.id']
   });
 
   // customized output
