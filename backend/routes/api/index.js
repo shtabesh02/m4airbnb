@@ -444,13 +444,11 @@ router.get('/reviews/current', requireAuth, async (req, res) => {
     },
     include: [
       { model: User, attributes: ['id', 'firstName', 'lastName'] },
-      {
-        model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-        include: { model: SpotImage }
-      },
+      { model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+        include: { model: SpotImage } },
       { model: ReviewImage, attributes: ['id', 'url'] }
     ],
-    group: ['Review.id', 'ReviewImages.id']
+    group: ['Review.id', 'ReviewImages.id', 'User.id']
   });
 
   // customized output
