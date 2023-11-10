@@ -315,7 +315,7 @@ router.get('/spots/:spotId', requireAuth, async (req, res) => {
         { model: SpotImage, attributes: ['id', 'url', 'preview'] },
         { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] }
       ],
-      group: ['Spot.id', 'SpotImages.id']
+      group: ['Spot.id', 'SpotImages.id', 'Owner.id']
     });
 
     res.status(200).json(spotDetails)
