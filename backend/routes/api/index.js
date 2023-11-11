@@ -105,7 +105,7 @@ router.get('/spots', async (req, res) => {
       const spots = await Spot.findAll({
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
           'description', 'price', 'createdAt', 'updatedAt',
-          [sequelize.fn('AVG', sequelize.col('Reviews.stars')), 'avgRating']],
+          [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
         // sequelize.fn is with lower case
         include: [
           { model: Review, attributes: [] },
