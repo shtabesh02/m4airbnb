@@ -746,7 +746,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
           spotId
         },
         include: {
-          model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'],
+          model: User, attributes: ['id', 'firstName', 'lastName'],
         }
       });
       res.status(200).json({
