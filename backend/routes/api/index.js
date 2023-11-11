@@ -485,7 +485,7 @@ router.get('/spots/:spotId/reviews', async (req, res) => {
         spotId
       },
       include: [
-        { model: User, as: 'Owner', attributes: ['id', 'firstName', 'lastName'] },
+        { model: User, attributes: ['id', 'firstName', 'lastName'] },
         { model: ReviewImage, attributes: ['id', 'url'] }
       ]
     });
@@ -727,7 +727,6 @@ router.get('/bookings/current', requireAuth, async (req, res) => {
     delete booking.Spot.SpotImages
   });
 
-  console.log('myResult: ', myResult)
   res.status(200).json({ Bookings: myResult });
 });
 
