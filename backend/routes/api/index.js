@@ -741,7 +741,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
   if (_spotId) {
     if (Number(loggedInUser) === Number(spotId)) {
       const booking = await Booking.findOne({
-        attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'UpdatedAt'],
+        attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt'],
         where: {
           spotId
         },
