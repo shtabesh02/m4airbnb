@@ -296,7 +296,6 @@ router.get('/spots/current', requireAuth, async (req, res) => {
   });
 });
 
-//
 // Get details of a Spot from an id
 router.get('/spots/:spotId', requireAuth, async (req, res) => {
   const spotId = parseInt(req.params.spotId);
