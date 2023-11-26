@@ -74,16 +74,32 @@ module.exports = (sequelize, DataTypes) => {
     lat: {
       type: DataTypes.DECIMAL,
       validate: {
-        notEmpty: {
+        min: {
+          args: [-90],
           msg: 'Latitude is not valid'
+        },
+        max: {
+          args: [90],
+          msg: 'Latitude is not valid'
+        },
+        notEmpty: {
+          msg: 'Latitude is required'
         }
       }
     },
     lng: {
       type: DataTypes.DECIMAL,
       validate: {
-        notEmpty: {
+        min: {
+          args: [-180],
           msg: 'Longitude is not valid'
+        },
+        max: {
+          args: [180],
+          msg: 'Longitude is not valid'
+        },
+        notEmpty: {
+          msg: 'Longitude is required'
         }
       }
     },

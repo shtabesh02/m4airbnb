@@ -1,7 +1,10 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { request } = require('express');
+const { Model, Op, Sequelize } = require('sequelize');
+
+
+// const {Sequelize} = require('../../db/models');
+
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -31,16 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    startDate: DataTypes.DATE,
+    startDate: {
+      type: DataTypes.DATE,
+    },
     endDate: {
       type: DataTypes.DATE,
-      validate: {
-        afterStart(value){
-          if(value < this.startDate){
-            throw new Error('endDate cannot be on or before startDate')
-          }
-        }
-      }
     }
   }, {
     sequelize,
