@@ -33,7 +33,6 @@ const validateBooking = [
     .exists({ checkFalsy: true })
     .notEmpty()
     .custom(async (value, { req }) => {
-      console.log('startDate value: ', value);
       const today = new Date();
       const selectedStartDate = new Date(value);
       if (selectedStartDate < today) {
@@ -55,7 +54,6 @@ const validateBooking = [
     .exists({ checkFalsy: true })
     .notEmpty()
     .custom(async (value, { req }) => {
-      console.log('endDate value: ', value);
       const selectedStartDate = new Date(req.body.startDate);
       const selectedEndDate = new Date(value);
       if (selectedEndDate <= selectedStartDate) {
@@ -82,7 +80,6 @@ const validateEditBooking = [
     .exists({ checkFalsy: true })
     .notEmpty()
     .custom(async (value, { req }) => {
-      console.log('startDate value: ', value);
       const today = new Date();
       const selectedStartDate = new Date(value);
       if (selectedStartDate < today) {
@@ -104,7 +101,6 @@ const validateEditBooking = [
     .exists({ checkFalsy: true })
     .notEmpty()
     .custom(async (value, { req }) => {
-      console.log('endDate value: ', value);
       const selectedStartDate = new Date(req.body.startDate);
       const selectedEndDate = new Date(value);
       if (selectedEndDate <= selectedStartDate) {
@@ -288,7 +284,6 @@ router.get('/spots', async (req, res) => {
         paramsValidation,
       });
     } else {
-      console.log('filters: ', filters);
       const spots = await Spot.findAll({
         attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
           'description', 'price', 'createdAt', 'updatedAt',
@@ -765,7 +760,6 @@ router.put('/reviews/:reviewId', requireAuth, async (req, res) => {
   // authorization
   const currentUser = req.user.id;
 
-  console.log('Old Review: ', oldReview)
   if (oldReview) {
     if (currentUser === oldReview.userId) {
       try {
@@ -779,7 +773,6 @@ router.put('/reviews/:reviewId', requireAuth, async (req, res) => {
           }
         });
         const updatedReview = await Review.findByPk(reviewId);
-        console.log('Updated Review: ', updatedReview)
         return res.status(200).json({
           id: reviewId,
           userId: updatedReview.userId,
@@ -948,7 +941,6 @@ router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req,
           error.errors.forEach(err => {
             ve[err.path] = err.message;
           });
-          console.log('ve details: ', ve['endDate']);
           if (ve['endDate'] === 'endDate cannot be on or before startDate') { // this msg is set in booking model, validation
             return res.status(400).json({
               message: "Bad Request",
@@ -1022,7 +1014,6 @@ router.put('/bookings/:bookingId', requireAuth, validateEditBooking, async (req,
             error.errors.forEach(err => {
               ve[err.path] = err.message;
             });
-            console.log('ve details: ', ve['endDate']);
             if (ve['endDate'] === 'endDate cannot be on or before startDate') { // this msg is set in booking model, validation
               return res.status(400).json({
                 message: "Bad Request",
