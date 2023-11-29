@@ -68,7 +68,6 @@ const validateSpotInput = [
   handleValidationErrors
 ];
 
-
 // booking validations
 const validateBooking = [
   check('startDate')
@@ -81,14 +80,32 @@ const validateBooking = [
         throw new Error('startDate cannot be in the past');
       }
 
-      const existingBooking = await Booking.findAll({
+      const existingBooking = await Booking.findOne({
+        // where: {
+        //   spotId: req.params.spotId,
+        //   endDate: { [Sequelize.Op.gte]: new Date(value) },
+        //   startDate: { [Sequelize.Op.lte]: new Date(value) }
+        // }
         where: {
           spotId: req.params.spotId,
-          endDate: { [Sequelize.Op.gte]: new Date(value) },
-          startDate: { [Sequelize.Op.lte]: new Date(value) }
-        }
+          [Sequelize.Op.or]:[
+            // startDate in a range
+            {
+              startDate: {[Sequelize.Op.lte]: new Date(value)},
+              endDate: {[Sequelize.Op.gte]: new Date(value)}
+            },
+            // surrounding a current range
+            {
+              [Sequelize.Op.and]: [
+                { startDate: {[Sequelize.Op.gte]: new Date(value)}},
+                { endDate: {[Sequelize.Op.lte]: new Date(req.body.endDate)}}
+              ]
+            }
+          ],
+        },
+
       });
-      if (existingBooking.length > 0) {
+      if (existingBooking) {
         throw new Error('Start Date conflicts with an existing booking');
       }
     }),
@@ -105,14 +122,31 @@ const validateBooking = [
         throw new Error('endDate cannot be on or before startDate');
       }
 
-      const existingBooking = await Booking.findAll({
+      const existingBooking = await Booking.findOne({
+        // where: {
+        //   spotId: req.params.spotId,
+        //   startDate: { [Sequelize.Op.lte]: new Date(value) },
+        //   endDate: { [Sequelize.Op.gte]: new Date(value) }
+        // }
         where: {
           spotId: req.params.spotId,
-          startDate: { [Sequelize.Op.lte]: new Date(value) },
-          endDate: { [Sequelize.Op.gte]: new Date(value) }
+          [Sequelize.Op.or]: [
+            // endDate in a range
+            {
+              startDate: {[Sequelize.Op.lte]: new Date(value)},
+              endDate: {[Sequelize.Op.gte]: new Date(value)}
+            },
+            // surrounding a current range
+            {
+              [Sequelize.Op.and]: [
+                { startDate: {[Sequelize.Op.gte]: new Date(req.body.startDate)} },
+                { endDate: {[Sequelize.Op.lte]: new Date(value)} }
+              ],
+            }
+          ],
         }
       });
-      if (existingBooking.length > 0) {
+      if (existingBooking) {
         throw new Error('End date conflicts with an existing booking')
       }
     }),
@@ -122,6 +156,38 @@ check('endDate')
   handleValidationErrors
 ];
 
+// edit booking validation for checking withing or surrounding
+const validateWithingSurroudning = [
+  check('conflict message') // Does not conflict within or surrounding itself
+    .custom(async (value, { req }) => {
+      // const [value1, value2] = values;
+      const existingBooking = await Booking.findOne({
+        where: {
+          // id: req.params.bookingId,
+            [Sequelize.Op.or]: [
+              // check within
+              {
+                startDate: {[Sequelize.Op.lt]: new Date(req.body.startDate)},
+                endDate: {[Sequelize.Op.gt]: new Date(req.body.endDate)}
+              },
+              // check surrounding
+              {
+                startDate: {[Sequelize.Op.gt]: new Date(req.body.startDate)},
+                endDate: {[Sequelize.Op.lt]: new Date(req.body.endDate)}
+              }
+            ]
+        },
+      });
+      if (existingBooking){
+        if(parseInt(existingBooking.id) !== parseInt(req.params.bookingId)){ // Itself
+          throw new Error('Date conflicts with an existing booking');
+        }else{
+          return true;
+        }
+      } 
+    }),
+    handleValidationErrors
+]
 // edit booking validations
 const validateEditBooking = [
   check('bookingId')
@@ -132,30 +198,105 @@ const validateEditBooking = [
         }
         return;
       }),
-  check('startDate')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .custom(async (value, { req }) => {
-      const today = new Date();
-      const selectedStartDate = new Date(value);
-      if (selectedStartDate < today) {
-        throw new Error('startDate cannot be in the past');
-      }
-
-      const existingBooking = await Booking.findAll({
+  check('startDate') // Does Not Conflict Surrounding Itself
+    .custom(async (value, {req}) => {
+      const existingBooking = await Booking.findOne({
         where: {
-          id: req.params.bookingId,
-          endDate: { [Sequelize.Op.gte]: new Date(value) },
-          startDate: { [Sequelize.Op.lte]: new Date(value) }
+          
         }
-      });
-      if (existingBooking.length > 0) {
-        throw new Error('Start Date conflicts with an existing booking');
+      })
+
+    }),
+  check('startDate')
+    .custom(async (value , {req}) => {
+      const today = new Date();
+      const startDate = new Date(value);
+      if (startDate < today) {
+        throw new Error('startDate cannot be in the past');
       }
     }),
   check('startDate')
     .notEmpty()
     .withMessage('startDate is required'),
+  check('startDate') // Start Date On Existing Start Date
+    .custom(async (value, {req}) => {
+      const existingStartDate = await Booking.findOne({
+        where: {
+          startDate: new Date(value)
+        }
+      });
+      if(existingStartDate){
+        throw new Error('Start Date on Existing Start Date')
+      }
+    }),
+  check('startDate') // Start Date On Existing End Date
+    .custom(async (value, {req}) => {
+      const existingEndDate = await Booking.findOne({
+        where: {
+          endDate: new Date(value)
+        }
+      })
+      if(existingEndDate){
+        throw new Error('Start Date On Existing End Date')
+      }
+    }),
+  check('startDate')  // Start Date During Existing Booking
+    .custom(async (value, {req}) => {
+      const existingBooking = await Booking.findOne({
+        where: {
+          startDate: {[Sequelize.Op.lt]: new Date(value)},
+          endDate: {[Sequelize.Op.gt]: new Date(value)}
+        }
+      })
+      if (existingBooking){
+        if(parseInt(existingBooking.id) !== parseInt(req.params.bookingId)){ // Itself
+          throw new Error('startDate conflicts with an existing booking');
+        }else{
+          return true;
+        }
+      } 
+    }),
+  check('endDate') //End Date On Existing Start Date
+    .custom(async (value, {req}) => {
+      const existingStartDate = await Booking.findOne({
+        where: {
+          startDate: new Date(value)
+        }
+      })
+      if(existingStartDate){
+        throw new Error('End Date On Existing Start Date')
+      }
+    }),
+  check('endDate') // End Date On Existing End Date
+    .custom(async (value, {req}) => {
+      const existingEndDate = await Booking.findOne({
+        where: {
+          endDate: new Date(value)
+        }
+      })
+      if(existingEndDate){
+        throw new Error('End Date On Existing End Date')
+      }
+    }),
+  check('endDate') // End Date During Existing Booking
+    .custom(async (value, {req}) => {
+      const existingBooking = await Booking.findOne({
+        where: {
+          startDate: {[Sequelize.Op.lt]: new Date(value)},
+          endDate: {[Sequelize.Op.gt]: new Date(value)}
+        }
+      })
+      // if(existingBooking){
+      //   throw new Error('End Date During Existing Booking')
+      // }
+      if (existingBooking){
+        if(parseInt(existingBooking.id) !== parseInt(req.params.bookingId)){ // Itself
+          throw new Error('Date conflicts with an existing booking');
+        }else{
+          return true;
+        }
+      } 
+    }),
   check('endDate')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -166,16 +307,37 @@ const validateEditBooking = [
         throw new Error('endDate cannot be on or before startDate');
       }
 
-      const existingBooking = await Booking.findAll({
+      const existingBooking = await Booking.findOne({
+        // where: {
+        //   id: req.params.bookingId,
+        //   startDate: { [Sequelize.Op.lte]: new Date(value) },
+        //   endDate: { [Sequelize.Op.gte]: new Date(value) }
+        // }
         where: {
-          id: req.params.bookingId,
-          startDate: { [Sequelize.Op.lte]: new Date(value) },
-          endDate: { [Sequelize.Op.gte]: new Date(value) }
+          // id: req.params.bookingId,
+          [Sequelize.Op.or]: [
+            // endDate in a range
+            {
+              startDate: {[Sequelize.Op.lt]: new Date(value)},
+              endDate: {[Sequelize.Op.gt]: new Date(value)}
+            },
+            // surrounding a current range
+            {
+              [Sequelize.Op.and]: [
+                { startDate: {[Sequelize.Op.gt]: new Date(req.body.startDate)} },
+                { endDate: {[Sequelize.Op.lt]: new Date(value)} }
+              ],
+            }
+          ],
         }
       });
-      if (existingBooking.length > 0) {
+      if (existingBooking){
+        if(existingBooking.id !== req.params.bookingId){
+          return true;
+        }else{
         throw new Error('End date conflicts with an existing booking')
       }
+      } 
     }),
   check('endDate')
     .notEmpty()
@@ -782,7 +944,7 @@ router.post('/reviews/:reviewId/images', requireAuth, async (req, res) => {
     if (currentUser === review.userId) {
       const imgCount = await ReviewImage.count();
 
-      if (imgCount <= 10) {
+      if (imgCount < 10) {
         const image = await review.createReviewImage({ reviewId, url });
 
         const img = {
@@ -1037,7 +1199,7 @@ router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req,
 
 // Edit a Booking
 // URL: /api/bookings/:bookingId
-router.put('/bookings/:bookingId', requireAuth, validateEditBooking, async (req, res) => {
+router.put('/bookings/:bookingId', requireAuth, validateWithingSurroudning, validateEditBooking, async (req, res) => {
   const bookingId = req.params.bookingId;
   const { startDate, endDate } = req.body;
 
@@ -1064,11 +1226,7 @@ router.put('/bookings/:bookingId', requireAuth, validateEditBooking, async (req,
             }
           });
 
-          const updatedBooking = await Booking.findOne({
-            where: {
-              id: bookingId
-            }
-          });
+          const updatedBooking = await Booking.findByPk(bookingId);
 
           return res.status(200).json(updatedBooking);
           // }
