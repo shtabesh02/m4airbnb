@@ -188,6 +188,7 @@ const validateWithingSurroudning = [
     }),
     handleValidationErrors
 ]
+
 // edit booking validations
 const validateEditBooking = [
   check('bookingId')
