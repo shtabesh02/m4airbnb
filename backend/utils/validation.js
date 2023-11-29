@@ -7,6 +7,7 @@ const handleValidationErrors = (req, _res, next) => {
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
+    const firstErr = validationErrors.array()[0];
     const errors = {};
     validationErrors
       .array()
@@ -17,6 +18,10 @@ const handleValidationErrors = (req, _res, next) => {
       return _res.status(403).json({
         message: 'Sorry, this spot is already booked for the specified dates',
         errors: errors
+      });
+    }else if(firstErr.path === 'bookingId'){
+      return _res.status(404).json({
+          "message": firstErr.msg
       });
     } else {
       return _res.status(400).json({

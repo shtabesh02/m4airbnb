@@ -124,7 +124,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       validate: {
         notEmpty: {
-          msg: 'Price per day is required.'
+          msg: 'Price per day is required'
         }
       }
     }

@@ -27,6 +27,47 @@ router.post('/test', function (req, res) {
   res.json({ requestBody: req.body });
 });
 
+// Spot input validations
+const validateSpotInput = [
+  check('address')
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage('Street address is required'),
+  check('city')
+      .exists({ checkFalsy: true })
+      .withMessage('City is required'),
+  check('state')
+      .exists({ checkFalsy: true })
+      .withMessage('State is required'),
+  check('country')
+      .exists({ checkFalsy: true })
+      .withMessage('Country is required'),
+  check('lat')
+      .isFloat({ min: -90, max: 90 })
+      .withMessage('Latitude is not valid'),
+  check('lat')
+      .notEmpty()
+      .withMessage('Latitude is required'),
+  check('lng')
+      .isFloat({ min: -180, max: 180})
+      .withMessage('Longitude is not valid'),
+  check('lng')
+      .notEmpty()
+      .withMessage('Longitude is required'),
+  check('name')
+      .isLength({ min: 1, max: 50 })
+      .withMessage('Name must be less than 50 characters'),
+  check('description')
+      .exists({ checkFalsy: true })
+      .notEmpty()
+      .withMessage('Description is required'),
+  check('price')
+      .isFloat({ gt:0 })
+      .withMessage('Price per day is required'),
+  handleValidationErrors
+];
+
+
 // booking validations
 const validateBooking = [
   check('startDate')
@@ -50,6 +91,9 @@ const validateBooking = [
         throw new Error('Start Date conflicts with an existing booking');
       }
     }),
+  check('startDate')
+    .notEmpty()
+    .withMessage('startDate is required'),
   check('endDate')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -71,11 +115,22 @@ const validateBooking = [
         throw new Error('End date conflicts with an existing booking')
       }
     }),
+check('endDate')
+    .notEmpty()
+    .withMessage('endDate is required'),
   handleValidationErrors
 ];
 
 // edit booking validations
 const validateEditBooking = [
+  check('bookingId')
+      .custom(async (value, {req}) => {
+        const booking = await Booking.findByPk(value)
+        if(!booking){
+          throw new Error("Booking couldn't be found")
+        }
+        return;
+      }),
   check('startDate')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -97,6 +152,9 @@ const validateEditBooking = [
         throw new Error('Start Date conflicts with an existing booking');
       }
     }),
+  check('startDate')
+    .notEmpty()
+    .withMessage('startDate is required'),
   check('endDate')
     .exists({ checkFalsy: true })
     .notEmpty()
@@ -118,6 +176,9 @@ const validateEditBooking = [
         throw new Error('End date conflicts with an existing booking')
       }
     }),
+  check('endDate')
+    .notEmpty()
+    .withMessage('endDate is required'),
   handleValidationErrors
 ];
 
@@ -439,8 +500,9 @@ router.get('/spots/:spotId', async (req, res) => {
 });
 
 // Create a Spot
-router.post('/spots', requireAuth, async (req, res) => {
+router.post('/spots', requireAuth, validateSpotInput, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
   const ownerId = req.user.id;
   try {
     const spot = await Spot.create({ ownerId, address, city, state, country, lat, lng, name, description, price });
@@ -928,6 +990,7 @@ router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req,
 
   const spot = await Spot.findByPk(spotId);
   if (spot) {
+    // Spot must NOT belong to the current user
     if (userId !== spot.ownerId) {
 
       // success
