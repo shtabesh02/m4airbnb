@@ -68,145 +68,88 @@ const validateSpotInput = [
   handleValidationErrors
 ];
 
-// booking validations
-const validateBooking = [
-  check('startDate')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .custom(async (value, { req }) => {
-      const today = new Date();
-      const selectedStartDate = new Date(value);
-      if (selectedStartDate < today) {
-        throw new Error('startDate cannot be in the past');
-      }
-
-      const existingBooking = await Booking.findOne({
-        // where: {
-        //   spotId: req.params.spotId,
-        //   endDate: { [Sequelize.Op.gte]: new Date(value) },
-        //   startDate: { [Sequelize.Op.lte]: new Date(value) }
-        // }
-        where: {
-          spotId: req.params.spotId,
-          [Sequelize.Op.or]:[
-            // startDate in a range
-            {
-              startDate: {[Sequelize.Op.lte]: new Date(value)},
-              endDate: {[Sequelize.Op.gte]: new Date(value)}
-            },
-            // surrounding a current range
-            {
-              [Sequelize.Op.and]: [
-                { startDate: {[Sequelize.Op.gte]: new Date(value)}},
-                { endDate: {[Sequelize.Op.lte]: new Date(req.body.endDate)}}
-              ]
-            }
-          ],
-        },
-
-      });
-      if (existingBooking) {
-        throw new Error('Start Date conflicts with an existing booking');
-      }
-    }),
-  check('startDate')
-    .notEmpty()
-    .withMessage('startDate is required'),
-  check('endDate')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .custom(async (value, { req }) => {
-      const selectedStartDate = new Date(req.body.startDate);
-      const selectedEndDate = new Date(value);
-      if (selectedEndDate <= selectedStartDate) {
-        throw new Error('endDate cannot be on or before startDate');
-      }
-
-      const existingBooking = await Booking.findOne({
-        // where: {
-        //   spotId: req.params.spotId,
-        //   startDate: { [Sequelize.Op.lte]: new Date(value) },
-        //   endDate: { [Sequelize.Op.gte]: new Date(value) }
-        // }
-        where: {
-          spotId: req.params.spotId,
-          [Sequelize.Op.or]: [
-            // endDate in a range
-            {
-              startDate: {[Sequelize.Op.lte]: new Date(value)},
-              endDate: {[Sequelize.Op.gte]: new Date(value)}
-            },
-            // surrounding a current range
-            {
-              [Sequelize.Op.and]: [
-                { startDate: {[Sequelize.Op.gte]: new Date(req.body.startDate)} },
-                { endDate: {[Sequelize.Op.lte]: new Date(value)} }
-              ],
-            }
-          ],
-        }
-      });
-      if (existingBooking) {
-        throw new Error('End date conflicts with an existing booking')
-      }
-    }),
-check('endDate')
-    .notEmpty()
-    .withMessage('endDate is required'),
-  handleValidationErrors
-];
-
-// edit booking validation for checking withing or surrounding
-const validateWithingSurroudning = [
+// Edit booking validation for checking withing or surrounding
+const validateEditWithingSurroudning = [
   check('conflict message') // Does not conflict within or surrounding itself
     .custom(async (value, { req }) => {
       // const [value1, value2] = values;
-      const existingBooking = await Booking.findOne({
-        where: {
-          // id: req.params.bookingId,
+      if (req.body.startDate && req.body.endDate) {
+        const existingBooking = await Booking.findOne({
+          where: {
+            // id: req.params.bookingId,
             [Sequelize.Op.or]: [
               // check within
               {
-                startDate: {[Sequelize.Op.lt]: new Date(req.body.startDate)},
-                endDate: {[Sequelize.Op.gt]: new Date(req.body.endDate)}
+                startDate: { [Sequelize.Op.lt]: new Date(req.body.startDate) },
+                endDate: { [Sequelize.Op.gt]: new Date(req.body.endDate) }
               },
               // check surrounding
               {
-                startDate: {[Sequelize.Op.gt]: new Date(req.body.startDate)},
-                endDate: {[Sequelize.Op.lt]: new Date(req.body.endDate)}
-              }
+                startDate: { [Sequelize.Op.gt]: new Date(req.body.startDate) },
+                endDate: { [Sequelize.Op.lt]: new Date(req.body.endDate) }
+              },
             ]
-        },
-      });
-      if (existingBooking){
-        if(parseInt(existingBooking.id) !== parseInt(req.params.bookingId)){ // Itself
-          throw new Error('Date conflicts with an existing booking');
-        }else{
-          return true;
-        }
-      } 
+          },
+        });
+          if (existingBooking) {
+            if (parseInt(existingBooking.id) !== parseInt(req.params.bookingId)) { // Itself
+              throw new Error('Date conflicts with an existing booking');
+            } else {
+              return true;
+            }
+          }
+      }
     }),
-    handleValidationErrors
+  handleValidationErrors
 ]
 
-// edit booking validations
-const validateEditBooking = [
+// Create booking validation for checking withing or surrounding
+const validateCreationWithingSurroudning = [
+  check('conflict message') // Does not conflict within or surrounding itself
+    .custom(async (value, { req }) => {
+      // const [value1, value2] = values;
+      if (req.body.startDate && req.body.endDate) {
+        const existingBooking = await Booking.findOne({
+          where: {
+            // id: req.params.bookingId,
+            [Sequelize.Op.or]: [
+              // check within
+              {
+                startDate: { [Sequelize.Op.lt]: new Date(req.body.startDate) },
+                endDate: { [Sequelize.Op.gt]: new Date(req.body.endDate) }
+              },
+              // check surrounding
+              {
+                startDate: { [Sequelize.Op.gt]: new Date(req.body.startDate) },
+                endDate: { [Sequelize.Op.lt]: new Date(req.body.endDate) }
+              },
+            ]
+          },
+        });
+          if (existingBooking) {
+              throw new Error('Date conflicts with an existing booking');
+            } else {
+              return true;
+            }
+      }
+    }),
+  handleValidationErrors
+]
+// Booking and Editing validations
+const validateBooking = [
   check('bookingId')
-      .custom(async (value, {req}) => {
-        const booking = await Booking.findByPk(value)
-        if(!booking){
+    .custom(async (value, { req }) => {
+      const bookingId = req.params.bookingId;
+      if (bookingId === undefined) {
+        return
+      } else {
+        const existingBooking = await Booking.findByPk(bookingId)
+        if (!existingBooking) {
           throw new Error("Booking couldn't be found")
+        }else{
+          return
         }
-        return;
-      }),
-  check('startDate') // Does Not Conflict Surrounding Itself
-    .custom(async (value, {req}) => {
-      const existingBooking = await Booking.findOne({
-        where: {
-          
-        }
-      })
-
+      }
     }),
   check('startDate')
     .custom(async (value , {req}) => {
@@ -216,9 +159,6 @@ const validateEditBooking = [
         throw new Error('startDate cannot be in the past');
       }
     }),
-  check('startDate')
-    .notEmpty()
-    .withMessage('startDate is required'),
   check('startDate') // Start Date On Existing Start Date
     .custom(async (value, {req}) => {
       const existingStartDate = await Booking.findOne({
@@ -257,6 +197,9 @@ const validateEditBooking = [
         }
       } 
     }),
+  check('startDate')
+    .notEmpty()
+    .withMessage('startDate is required'),
   check('endDate') //End Date On Existing Start Date
     .custom(async (value, {req}) => {
       const existingStartDate = await Booking.findOne({
@@ -1113,9 +1056,10 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
   const spotId = req.params.spotId;
 
   const spot = await Spot.findByPk(spotId);
-
+  
   if (spot) {
-    if (Number(loggedInUser) === Number(spotId)) {
+    // If you ARE the owner of the spot
+    if (parseInt(loggedInUser) === parseInt(spot.ownerId)) {
       const booking = await Booking.findAll({
         attributes: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt'],
         where: {
@@ -1129,6 +1073,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
         Bookings: booking
       });
     } else {
+      // If you ARE NOT the owner of the spot.
       const booking = await Booking.findAll({
         attributes: ['spotId', 'startDate', 'endDate'],
         where: {
@@ -1147,7 +1092,7 @@ router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
 });
 
 // Create a Booking from a Spot based on the Spot's id
-router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
+router.post('/spots/:spotId/bookings', requireAuth, validateCreationWithingSurroudning, validateBooking, async (req, res) => {
   const spotId = req.params.spotId;
   const userId = req.user.id;
   const { startDate, endDate } = req.body;
@@ -1200,7 +1145,7 @@ router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req,
 
 // Edit a Booking
 // URL: /api/bookings/:bookingId
-router.put('/bookings/:bookingId', requireAuth, validateWithingSurroudning, validateEditBooking, async (req, res) => {
+router.put('/bookings/:bookingId', requireAuth, validateEditWithingSurroudning, validateBooking, async (req, res) => {
   const bookingId = req.params.bookingId;
   const { startDate, endDate } = req.body;
 
