@@ -70,7 +70,7 @@ const validateSpotInput = [
 
 // Edit booking validation for checking withing or surrounding
 const validateEditWithingSurroudning = [
-  check('conflict message') // Does not conflict within or surrounding itself
+  check('conflict_message') // Does not conflict within or surrounding itself
     .custom(async (value, { req }) => {
       // const [value1, value2] = values;
       if (req.body.startDate && req.body.endDate) {
@@ -105,7 +105,7 @@ const validateEditWithingSurroudning = [
 
 // Create booking validation for checking withing or surrounding
 const validateCreationWithingSurroudning = [
-  check('conflict message') // Does not conflict within or surrounding itself
+  check('conflict_message') // Does not conflict within or surrounding itself
     .custom(async (value, { req }) => {
       // const [value1, value2] = values;
       if (req.body.startDate && req.body.endDate) {
@@ -230,12 +230,9 @@ const validateBooking = [
           endDate: {[Sequelize.Op.gt]: new Date(value)}
         }
       })
-      // if(existingBooking){
-      //   throw new Error('End Date During Existing Booking')
-      // }
       if (existingBooking){
         if(parseInt(existingBooking.id) !== parseInt(req.params.bookingId)){ // Itself
-          throw new Error('Date conflicts with an existing booking');
+          throw new Error('endDate conflicts with an existing booking');
         }else{
           return true;
         }
@@ -252,11 +249,6 @@ const validateBooking = [
       }
 
       const existingBooking = await Booking.findOne({
-        // where: {
-        //   id: req.params.bookingId,
-        //   startDate: { [Sequelize.Op.lte]: new Date(value) },
-        //   endDate: { [Sequelize.Op.gte]: new Date(value) }
-        // }
         where: {
           // id: req.params.bookingId,
           [Sequelize.Op.or]: [

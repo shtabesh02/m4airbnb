@@ -13,8 +13,13 @@ const handleValidationErrors = (req, _res, next) => {
       .array()
       .forEach(error => errors[error.path] = error.msg);
 
-    if (errors['endDate'] === 'End date conflicts with an existing booking' ||
-      errors['startDate'] === 'Start Date conflicts with an existing booking') {
+    if (errors['conflict_message'] || errors['startDate'] === 'Start Date on Existing Start Date' || 
+    errors['endDate'] === 'End Date On Existing End Date' ||
+    errors['startDate'] === 'Start Date on Existing Start Date' ||
+    errors['startDate'] === 'Start Date On Existing End Date' ||
+    errors['endDate'] === 'End Date On Existing Start Date'||
+    errors['startDate'] === 'startDate conflicts with an existing booking'||
+    errors['endDate'] === 'endDate conflicts with an existing booking') {
       return _res.status(403).json({
         message: 'Sorry, this spot is already booked for the specified dates',
         errors: errors
