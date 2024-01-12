@@ -402,7 +402,8 @@ router.get('/spots', async (req, res) => {
     if (minLat !== undefined && (minLat < -90 || minLat > 90)) {
       paramsValidation.minLat = 'Minimum latitude is invalid';
     } else if (minLat !== undefined) {
-      filters.lat = { [Op.gte]: minLat }
+      filters.lat = { [Op.gte]: minLat } // first
+      // filters.lat = { ...(filters.lat || {}), [Op.gte]: [minLat] }
     }
 
     if (maxLat !== undefined && (maxLat < -90 || maxLat > 90)) {
@@ -414,7 +415,8 @@ router.get('/spots', async (req, res) => {
     if (minLng !== undefined && (minLng < -180 || minLng > 180)) {
       paramsValidation.minLng = 'Minimum longitude is invalid';
     } else if (minLng !== undefined) {
-      filters.lng = { [Op.gte]: [minLng] };
+      filters.lng = { [Op.gte]: [minLng] }; // first
+      // filters.lng = { ...(filters.lng || {}), [Op.gte]: [minLng] };
     }
 
     if (maxLng !== undefined && (maxLng < -180 || maxLng > 180)) {
@@ -427,7 +429,8 @@ router.get('/spots', async (req, res) => {
       paramsValidation.minPrice = 'Minimum price must be greater than or equal to 0';
       // filters.price = { [Op.or]: [{[Op.gte]: [minPrice]}, {[Op.lte]: [maxPrice]}] }
     } else if (minPrice !== undefined) {
-      filters.price = { [Op.gte]: [minPrice] };
+      filters.price = { [Op.gte]: [minPrice] }; //first
+      // filters.price = { ...(filters.price || {}), [Op.gte]: minPrice };
     }
 
     if (maxPrice !== undefined && (maxPrice < 0)) {
@@ -543,6 +546,8 @@ router.get('/spots/current', requireAuth, async (req, res) => {
     ],
     group: ['Spot.id', 'SpotImages.id']
   });
+// [Sequelize.fn('DECIMAL', Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 2), 'avgRating']
+
 
   // customized output
 

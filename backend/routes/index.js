@@ -8,7 +8,7 @@ router.use('/api', apiRouter);
 
 
 router.get('/', async (req, res) => {
-  const msg = '<h1>Wlecome to this page. Currently it is under maintenance...!</h1>';
+  const msg = 'Wlecome to this page.';
   res.status(200).json(msg);
 })
 // router.get('/hello/world', function(req, res) {
