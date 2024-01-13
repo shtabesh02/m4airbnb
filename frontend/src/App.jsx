@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import LoginFormPage from './components/LoginFormPage/LoginFormPage';
 
 import * as sessionActions from './store/session';
+import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -19,8 +20,8 @@ function Layout() {
 
   return (
     <div className='app-container'>
-      {isLoaded && <Outlet />}
-      {/* <Outlet />
+     <Outlet />
+      {/* {isLoaded && <Outlet />}
           just to check the login page. because if the page is logged in,
           it automatically navigate to home */}
     </div>
@@ -36,8 +37,12 @@ const router = createBrowserRouter([
         element: <h1>Welcome!</h1>
       },
       {
-        path: 'login',
+        path: '/login',
         element: <LoginFormPage />
+      },
+      {
+        path: '/signup',
+        element: <SignupFormPage />
       }
     ]
   }
