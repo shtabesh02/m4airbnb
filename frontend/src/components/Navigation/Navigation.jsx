@@ -1,47 +1,36 @@
-// frontend/src/components/Navigation/Navigation.jsx
-
-import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import * as sessionActions from '../../store/session';
-
 import './Navigation.css';
+
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
-  const dispatch = useDispatch();
+  //console.log(sessionUser)
 
-  const logout = (e) => {
-    e.preventDefault();
-    dispatch(sessionActions.logout());
-  };
+  const navigate = useNavigate()
 
-  const sessionLinks = sessionUser ? (
-    <>
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
-      <li>
-        <button onClick={logout}>Log Out</button>
-      </li>
-    </>
-  ) : (
-    <>
-      <li>
-        <NavLink to="/login">Log In</NavLink>
-      </li>
-      <li>
-        <NavLink to="/signup">Sign Up</NavLink>
-      </li>
-    </>
-  );
-
+  const handleCreateNewSpotForm = () => {
+    navigate(`/spots/newSpot`)
+  }
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
+    <ul className='navBar'>
+      <NavLink to="/">
+        <img className='logo' src="/logo.png" alt="Home" />
+      </NavLink>
+      <div className='toggle-container'>
+        {sessionUser && (
+          <button className ='navBar-create-new-button' onClick={handleCreateNewSpotForm}>
+          Create a New Spot
+          </button>
+        )}
+        {isLoaded && (
+          <li className="toggle" >
+            <ProfileButton user={sessionUser} />
+          </li>
+        )}
+      </div>
+
     </ul>
   );
 }

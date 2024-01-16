@@ -1,25 +1,34 @@
-.logo{
-    width: 50px;
+.login{
     padding: 5px;
     margin: 5px;
 }
 
-.navBar{
+.form{
     padding: 5px;
     margin: 5px;
 }
 
-.toggle-container{
+.form-error-message{
     padding: 5px;
     margin: 5px;
 }
 
-.navBar-create-new-button{
+.form-label{
     padding: 5px;
     margin: 5px;
 }
 
-.toggle{
+.form-input{
+    padding: 5px;
+    margin: 5px;
+}
+
+.login-form-button{
+    padding: 5px;
+    margin: 5px;
+}
+
+.login-form-demo-login{
     padding: 5px;
     margin: 5px;
 }

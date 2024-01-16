@@ -1,25 +1,30 @@
-.logo{
-    width: 50px;
+.signup{
     padding: 5px;
     margin: 5px;
 }
 
-.navBar{
+.form{
     padding: 5px;
     margin: 5px;
 }
 
-.toggle-container{
+.form-label{
     padding: 5px;
     margin: 5px;
 }
 
-.navBar-create-new-button{
+.input{
     padding: 5px;
     margin: 5px;
 }
 
-.toggle{
+.form-error-message{
     padding: 5px;
     margin: 5px;
 }
+
+.signup-form-button{
+    padding: 5px;
+    margin: 5px;
+}
+
