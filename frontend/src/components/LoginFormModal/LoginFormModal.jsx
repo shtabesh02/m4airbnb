@@ -22,18 +22,16 @@ function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        //console.log(data)
         if (data && data.message) {
           setErrors(data);
         }
-        //console.log(errors)
     });
   };
 
   //create a hanlder to log in demo user when demo button is clicked.
   const handleDemoLogin = (e) => {
     e.preventDefault();
-    return dispatch(sessionActions.login({ credential: 'Demouser', password: 'demouser' }))
+    return dispatch(sessionActions.login({ credential: 'adanesh', password: 'password2' }))
       .then(closeModal)
   }
 

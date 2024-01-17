@@ -8,7 +8,7 @@
     padding: 10px 20px;
     background-color: #ffffff; /* Update with your preferred background color */
     color: #000000; /* Update with your preferred text color */
-    cursor: pointer;
+    /* cursor: pointer; */
     border-bottom: 1px solid #bba2a2;;
   }
   
@@ -24,6 +24,7 @@
     /* background-color: #000000; */
     /* width: 100px;
     height: 100px; */
+    /* cursor: pointer; */
   }
   
   .navBar-create-new-button {
@@ -40,6 +41,7 @@
   .toggle {
     margin-left: auto;
     list-style-type: none;
+    /* cursor: pointer; */
   }
 
   .profile-dropdown{
@@ -55,6 +57,7 @@
     cursor: pointer;
     border: #f2eaea solid;
     border-radius: 10px;
+    /* cursor: pointer; */
   }
   
   .profile-dropdown li:hover{
@@ -64,7 +67,7 @@
   .profile-dropdown li{
     padding: 5px;
     margin: 5px;
-    width: 80px;
+    width: max-content;
   }
   /* Dropdown Styles */
   .dropdown-list {
@@ -75,6 +78,7 @@
     background-color: #333; /* Update with your preferred background color */
     padding: 10px;
     list-style: none;
+    /* cursor: pointer; */
   }
   
   /* .navBar:hover .dropdown-list {
