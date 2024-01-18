@@ -131,8 +131,6 @@ function SignupFormModal() {
         <button
             className='signup-form-button'
             type="submit"
-            // disabled={username.length < 4}
-            // disabled={signUpNotEmpty}
             disabled = {!email || !username || username.length < 4 || !firstName || !lastName || !password || password.length < 6 || !confirmPassword}
             >
               Sign Up
