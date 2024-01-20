@@ -1,0 +1,25 @@
+
+.theSpotContainer {
+  display: flex;
+  margin: 5px;
+  padding: 5px;
+}
+
+.individualSpotContainer{
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  width: 450px;
+  height: auto;
+}
+
+.spotPhoto{
+  border-radius: 5px;
+  width: 400px;
+}
+
+.spotInfo{
+  display: flex;
+  justify-content: space-between;
+}
