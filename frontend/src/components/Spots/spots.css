@@ -1,25 +1,42 @@
 
 .theSpotContainer {
   display: flex;
-  margin: 5px;
-  padding: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem 3rem;
+  gap: 1rem;
 }
 
 .individualSpotContainer{
-  border: 1px solid #000;
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: none;
+  border-radius: 1rem;
   margin: 5px;
   padding: 5px;
-  width: 450px;
+  width: 300px;
   height: auto;
+  object-fit: cover;
 }
 
-.spotPhoto{
-  border-radius: 5px;
-  width: 400px;
+.spotPhoto img{
+  border-radius: 1rem;
+  width: 300px;
 }
 
 .spotInfo{
   display: flex;
+  flex-direction: column;
+  margin: 5px;
+  padding: 5px;
+}
+
+.city-and-rating{
+  display: flex;
   justify-content: space-between;
+}
+
+.nav-link{
+  text-decoration: none;
 }

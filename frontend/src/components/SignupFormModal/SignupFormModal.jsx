@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch} from 'react-redux';
 //import { Navigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
@@ -25,7 +25,7 @@ function SignupFormModal() {
   // }, [email, username, firstName, lastName, password, confirmPassword]);
 
   // The sign-up button should be disabled when any field is empty
-  const sighupCheck = {}
+  // const sighupCheck = {}
   //if (sessionUser) return <Navigate to="/" replace={true} />;
 
   const handleSubmit = (e) => {

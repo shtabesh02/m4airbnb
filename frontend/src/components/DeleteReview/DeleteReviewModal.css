@@ -1,0 +1,28 @@
+.deletereview-confirm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.deletereview-confirm-button {
+    margin: 10px;
+    margin-bottom: 20px;
+    background-color:#FF5A5F ;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+    border-radius: 4px;
+    height: 30px
+}
+
+.deletereview-cancel-button {
+    margin: 10px;
+    margin-bottom: 20px;
+    background-color:#999999;
+    color: white;
+    cursor: pointer;
+    width: 200px;
+    border-radius: 4px;
+    height: 30px
+}
