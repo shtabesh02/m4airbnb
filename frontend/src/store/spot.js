@@ -38,11 +38,12 @@ const loadSpotDetails = (spotDetails) => {
 }
 
 // Thunk action to load the spot details
-export const loadSpotDetailsfromDB = () => async (dispatch) => {
-    const response = await csrfFetch('/api/spots');
+export const loadSpotDetailsfromDB = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`);
     console.log('from thunk: ', response);
     if(response.ok){
         const data = await response.json();
+        console.log('Spot Details from thunk: ', data)
         dispatch(loadSpotDetails(data));
         return data
     }else{
@@ -50,6 +51,17 @@ export const loadSpotDetailsfromDB = () => async (dispatch) => {
         return e;
     }
 }
+
+// Thunk action to insert new spot to spot table
+export const insertNewSpot = (newSpotDetails) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newSpotDetails)
+    });
+    
+}
+
 
 // Spot Reducer
 const initialState = {};
@@ -64,6 +76,7 @@ const spotReducer = (state = initialState, action) => {
         }
         case LOAD_SPOT_DETAILS: {
             newState[action.payload.id] = {...newState[action.payload.id], ...action.payload}
+            console.log('from reducer: ', newState);
             return newState
         }
         default:

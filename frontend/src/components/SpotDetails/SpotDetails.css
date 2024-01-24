@@ -1,0 +1,57 @@
+.spotDetailContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+}
+.spotDetail {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .leftImage{
+    width: 45%;
+  }
+
+  .leftImage img{
+    width: 600px;
+    height: 430px;
+    padding: 5px;
+    border-radius: 10px 0px 0px 10px;
+  }
+  .rightImages{
+    width: 45%;
+  }
+  
+  .rightImages img{
+    width: 300px;
+    height: 209px;
+    padding: 5px;
+  }
+
+  .rightImages .tr{
+    border-top-right-radius: 10px;
+  }
+
+  .rightImages .bl{
+    border-bottom-right-radius: 10px;
+  }
+
+  .reviewSummaryInfo{
+    display: flex;
+  }
+
+  .reviewSummaryInfo .hostDetails{
+    width: 70%;
+  }
+
+  .reviewSummaryInfo .callOutInfo{
+    width: 30;
+  }
+  .horizontal-line {
+    border: none;
+    height: 1px;
+    background-color: black;
+    margin: 20px 0; /* Adjust margin as needed */
+  }  
