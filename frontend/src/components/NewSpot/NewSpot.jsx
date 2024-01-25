@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { insertNewSpot } from "../../store/spot";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const NewSpot = () => {
     const [country, setCountry] = useState('');
@@ -21,6 +22,7 @@ const NewSpot = () => {
 
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     // handling submission of new spot
@@ -52,12 +54,39 @@ const NewSpot = () => {
                 setImgErr({ ...imgErr || {}, extension: 'Image URL must end in .png, .jpg, or .jpeg' })
         }
 
-        if(!price){
-            setErr({price: 'Price is required.'})
-        }
 
         // calling insert Thunk action creator
         let result = await dispatch(insertNewSpot(newSpotDetails))
+                     .catch(async (result) => {
+                        const data = await result.json();
+                        if(data && data.message){
+                            setErr(data.err)
+                            if(data.message === `value too long for type character varying(255)`){
+                                setErr({description: data.message})
+                            }
+                            return;
+                        }
+                     })
+
+                     if(result?.id){
+                        const spotId = result.id;
+                        const photoUrls = [url1, url2, url3, url4, url5];
+
+                        for (const url of photoUrls){
+                            const newImages = {
+                                url,
+                                preview: true,
+                            }
+                            if(url){
+                                await dispatch(insertNewImage(newImages, spotId)); // call the add image thunk action creator.
+                            }
+                        }
+
+                        // After insertion, empty the form
+                        setCountry('');
+
+                        navigate(`/spots/${result.id}`)
+                     }
     }
 
     return (

@@ -2,7 +2,8 @@ import { csrfFetch } from "./csrf";
 
 
 const LOAD_SPOTS = 'spot/load_spots';
-const LOAD_SPOT_DETAILS = 'spot/LOAD_SPOT_DETAILS'
+const LOAD_SPOT_DETAILS = 'spot/LOAD_SPOT_DETAILS';
+const INSERT_IMAGE = '/spot/INSERT_IMAGE'
 
 
 // Regular action to load the spots
@@ -59,9 +60,39 @@ export const insertNewSpot = (newSpotDetails) => async (dispatch) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(newSpotDetails)
     });
-    
+    if(response.ok){
+        const data = await response.json();
+        dispatch(loadSpotDetails(data));
+        return data;
+    }else{
+        const e = await response.json();
+        return e.errors;
+    }
 }
 
+// Regular action to insert images to image table
+const insertImage = (spotId, imageUrls) => {
+    return {
+        type: INSERT_IMAGE,
+        payload: {spotId, imageUrls}
+    }
+}
+// Thunk action to insert new image to image table
+export const insertNewImage = (img, spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/posts/${spotId}/images`, {
+        method: 'POST',
+        header: {'Content-Type': 'application/json'},
+        body: JSON.stringify(img)
+    })
+    if(response.ok){
+        const data = await response.json();
+        dispatch(insertImage(spotId, data.url)) // call image action creator
+        return data;
+    }else{
+        const e = await response.json();
+        return e;
+    }
+}
 
 // Spot Reducer
 const initialState = {};
