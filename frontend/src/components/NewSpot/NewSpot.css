@@ -1,0 +1,91 @@
+.newSpotContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    /* padding: 10px; */
+  }
+  
+  .newSpotForm {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+    padding: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .newSpotForm h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .firstSection,
+  .secondSection,
+  .thirdSection,
+  .fourthSection,
+  .fifthSection {
+    margin-bottom: 30px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .cityNstate {
+    display: flex;
+    gap: 5px;
+    justify-content: space-around
+  }
+
+  .lat-long{
+    display: flex;
+    gap: 5px;
+    justify-content: space-around
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  .priceSign {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .priceSign span {
+    font-size: 18px;
+  }
+  
+  .submitSection button {
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .submitSection button:hover {
+    background-color: #45a049;
+  }
+
+  .errors{
+    color: red;
+  }
+  

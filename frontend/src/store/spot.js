@@ -66,6 +66,7 @@ export const insertNewSpot = (newSpotDetails) => async (dispatch) => {
         return data;
     }else{
         const e = await response.json();
+        console.log('error from thunk for spot insertion: ', e);
         return e.errors;
     }
 }
@@ -79,17 +80,19 @@ const insertImage = (spotId, imageUrls) => {
 }
 // Thunk action to insert new image to image table
 export const insertNewImage = (img, spotId) => async (dispatch) => {
-    const response = await csrfFetch(`/api/posts/${spotId}/images`, {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
         method: 'POST',
         header: {'Content-Type': 'application/json'},
-        body: JSON.stringify(img)
+        body: JSON.stringify(img),
     })
+    // console.load('')
     if(response.ok){
         const data = await response.json();
         dispatch(insertImage(spotId, data.url)) // call image action creator
         return data;
     }else{
         const e = await response.json();
+        console.log('error from thunk for image insertion: ', e);
         return e;
     }
 }

@@ -37,7 +37,7 @@ function SpotDetails() {
 
 
     const [alreadyReviewd, setAlreadyReviewd] = useState(false);
-    // checking the reviews of the current user
+    // checking to see if the loggedin user has reviewed the current spot
     useEffect(() => {
         if (currentUser && spot && currentSpotReviews) {
             if (alreadyReviewd) {

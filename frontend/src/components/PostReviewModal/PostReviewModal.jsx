@@ -67,13 +67,6 @@ function PostNewReviewModal ({spotId}) {
                    rows='5'
                >
                </textarea>
-
-
-               {/* <rating>
-                   onChange={(e) => setRating(e.target.value)}
-
-
-               <rating/> */}
                {errors.stars && (<div className='newspot-form-required-input'>{errors.stars}</div>)}
 
 
