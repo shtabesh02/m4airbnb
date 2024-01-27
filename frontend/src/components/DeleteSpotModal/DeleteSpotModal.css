@@ -1,0 +1,28 @@
+.deletespot-confirm-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+}
+
+.deletespot-confirm-button {
+    margin: 10px;
+    margin-bottom: 20px;
+    background-color:#FF5A5F ;
+    color: white;
+    cursor: pointer;
+    width: 208px;
+    border-radius: 4px;
+    height: 30px
+}
+
+.deletespot-cancel-button {
+    margin: 10px;
+    margin-bottom: 20px;
+    background-color:#999999;
+    color: white;
+    cursor: pointer;
+    width: 208px;
+    border-radius: 4px;
+    height: 30px
+}

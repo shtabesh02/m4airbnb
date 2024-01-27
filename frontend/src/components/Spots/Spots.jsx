@@ -6,18 +6,17 @@ import './spots.css';
 
 const Spots = () => {
     const allSpots = useSelector(state => Object.values(state.spots));
-    console.log('All spots from Spots.jsx: ', allSpots);
+    // console.log('All spots from Spots.jsx: ', allSpots);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(loadSpotsfromDB())
     }, [dispatch]);
     
-    console.log('from Spots.jsx', allSpots)
+    // console.log('from Spots.jsx', allSpots)
     return (
         <div>
-            <h1>All the spots are here...</h1>
-                
+            <h1>All the spots are here...</h1>   
             <div className='theSpotContainer'>
                 {allSpots.map((spot) => (
                     
@@ -45,7 +44,6 @@ const Spots = () => {
                     </div>
                 ))}
             </div>
-          
         </div>
     );
 }

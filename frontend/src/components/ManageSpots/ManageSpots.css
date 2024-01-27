@@ -1,0 +1,52 @@
+
+.theSpotContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem 3rem;
+    gap: 1rem;
+  }
+  
+  .individualSpotContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: none;
+    border-radius: 1rem;
+    margin: 5px;
+    padding: 5px;
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .spotPhoto img{
+    border-radius: 1rem;
+    width: 300px;
+  }
+  
+  .spotInfo{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    padding: 5px;
+  }
+  
+  .city-and-rating{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .nav-link{
+    text-decoration: none;
+  }
+
+  .updateDelete{
+    display: flex;
+    justify-content: center;
+  }
+
+  .updateDelete button{
+    margin: 5px;
+    
+  }

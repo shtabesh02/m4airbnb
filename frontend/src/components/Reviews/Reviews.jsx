@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadReviewsfromDB } from "../../store/review";
 import { loadSpotDetailsfromDB, loadSpotsfromDB } from '../../store/spot';
-// import './Reviews.css';
+// import './Reviews.css'; // create this css file later
 import OpenModalButton from  '../OpenModalButton/OpenModalButton'
 import DeleteReviewModal from '../DeleteReview/DeleteReviewModal';
 
@@ -16,9 +16,7 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     const spotOwnerId = useSelector(state => state.spots[spotId]?.ownerId);
 
 
-    // const spotOwnerId = useSelector(state => state.spots[`${spotId}`].ownerId)
-
-    console.log('spot owner id: ', spotOwnerId)
+    // console.log('spot owner id: ', spotOwnerId)
     
     const currentUserId = useSelector(state => state.session.user?.id)
     
@@ -36,7 +34,7 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     // }, [dispatch,spotOwnerId, spot, spotId]);
 
 
-    console.log('spot from Reviews.jsx: ', spot)
+    // console.log('spot from Reviews.jsx: ', spot)
 
     useEffect(() => {
         dispatch(loadReviewsfromDB(spotId));

@@ -1,37 +1,52 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './PostReviewModal.css'
-// import { insertReview} from '../../store/review';
-import RatingStars from './RatingStars';
-import { insertReview } from '../../store/review';
-function PostNewReviewModal ({spotId}) {
+import './UpdateReviewModal.css'
 
+import RatingStars from './RatingStar';
+import { loadReviewsfromDB, updateCurrentReview } from '../../store/review';
+const UpdateReviewModal =  ({ spotId, reviewId}) => {
+
+    // const spotId = 1;
+    // console.log('spotId from UpdateReviewModal: ', spotId)
     const dispatch = useDispatch();
     //const sessionUser = useSelector((state) => state.session.user);
-    const [review, setReview] = useState('');
-    const [rating, setRating] = useState(0);
+    const reviews = useSelector(state => Object.values(state.reviews));
+    // console.log('reviews: ', reviews)
+
+
+    const currentReview = reviews.filter(review => review.id == reviewId)
+    const [review, setReview] = useState(currentReview[0].review);
+    const [rating, setRating] = useState(currentReview[0].stars);
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
     //console.log(spotId)
+
+
+    useEffect(() => {
+        dispatch(loadReviewsfromDB(spotId));
+    }, [dispatch, spotId, reviewId]);
+
 
     const onChange = (num) => {
         setRating(num);
     };
 
-    const handleSubmit = (e) => {
+    const updateReview = async (e) => {
+        // console.log('Update Review Called');
         e.preventDefault();
         setErrors({});
 
-        const reviewForm = {
+        const updatedReview = {
             review,
             stars: rating
         }
-        return dispatch(insertReview(reviewForm, spotId))
+        let result = await dispatch(updateCurrentReview(updatedReview, reviewId))
           .then(closeModal)
           .catch(async (res) => {
-            const data = await res.json();
-            //console.log(data)
+            // console.log('res: ', res)
+            // const data = await res.json();
+            // console.log('when it is called show the result: ', data)
             if (data && data.message) {
                 // console.log('data.errors: ', data.errors)
                 setErrors(data.errors);
@@ -40,23 +55,22 @@ function PostNewReviewModal ({spotId}) {
             //console.log(errors)
             return;
         });
+        if(result?.id){
+            navigate(`/reviews/current`)
+        }
     };
-
-
-
     return (
         <div className='reviewContainerForm'>
-            <h1>How was your Stay?</h1>
+            <h1>How was your Stay at -SpotName- ?</h1>
                 {errors.message && (
                 <p className=''>{errors.message}</p>
             )}
             {errors.review && (<div className='requiredInput'>{errors.review}</div>)}
-            <form className='form' onSubmit={handleSubmit}>
+            <form className='form' onSubmit={updateReview}>
                 <textarea className='reviewText'
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                     name='review'
-                    placeholder='Leave your review here...'
                     rows='5'
                 >
                 </textarea>
@@ -69,13 +83,13 @@ function PostNewReviewModal ({spotId}) {
 
                 <RatingStars rating={rating} onChange={onChange}/>
               
-
+              
                 <button className={`${review.length < 10 || rating < 1 ? 'disabled' : 'submitReview'}`}
                     type='button'
-                    onClick={handleSubmit}
                     disabled={review.length < 10 || rating < 1}
+                    onClick={updateReview}
                 >
-                    Submit Your Review
+                    Update Your Review
                 </button>
 
 
@@ -84,4 +98,4 @@ function PostNewReviewModal ({spotId}) {
     )
 }
 
-export default PostNewReviewModal
+export default UpdateReviewModal;

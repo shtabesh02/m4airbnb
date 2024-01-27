@@ -32,7 +32,7 @@ function SpotDetails() {
     }, [dispatch, spot, spotId]);
 
 
-    console.log('spot from SpotDetails.jsx: ', spot)
+    // console.log('spot from SpotDetails.jsx: ', spot)
 
 
 

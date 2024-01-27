@@ -1,22 +1,11 @@
 .login{
     padding: 5px;
     margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.form{
-    padding: 5px;
-    margin: 5px;
-}
-
-.form-error-message{
-    padding: 5px;
-    margin: 5px;
-}
-
-.form-label{
-    padding: 5px;
-    margin: 5px;
-}
 
 .form-input{
     padding: 5px;

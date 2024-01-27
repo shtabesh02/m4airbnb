@@ -14,6 +14,7 @@ const loadReviews = (reviews) => {
 
 // Thunk action to fetch reviews from DB
 export const loadReviewsfromDB = (spotId) => async (dispatch) => {
+    // console.log('spotId from loadReviewsfromDB ', spotId);
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
     if(response.ok){
         const reviews = await response.json();
@@ -24,6 +25,22 @@ export const loadReviewsfromDB = (spotId) => async (dispatch) => {
         return e;
     }
 }
+
+
+
+// Thunk action to load the current User reviews from DB
+export const loadCurrentUserReviewfromDB = () => async (dispatch) => {
+    const response = await csrfFetch(`/api/reviews/current`);
+    if(response.ok){
+        const reviews = await response.json();
+        dispatch(loadReviews(reviews.Reviews));
+        return reviews;
+    }else{
+        const e = await response.json();
+        return e;
+    }
+}
+
 
 // Regular action for deleting the reviews
 const removeReview = (reviewId) => {
@@ -52,7 +69,7 @@ export const deleteReviewfromDB = (reviewId, spotId) => async (dispatch) => {
 
 
 // Thunk action for adding review to a post
-export const addReviewToDB = (reviewForm, spotId) => async (dispatch) => {
+export const insertReview = (reviewForm, spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -68,6 +85,23 @@ export const addReviewToDB = (reviewForm, spotId) => async (dispatch) => {
     }
 }
 
+
+// Thunk action to update the  current review
+export const updateCurrentReview = (updateDetails, reviewId) => async (dispatch) => {
+    // console.log('updateReviewCalled: ', updateDetails)
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(updateDetails)
+    });
+    if(response.ok){
+        const data = await response.json();
+        return data;
+    }else{
+        const e = await response.json();
+        return e;
+    }
+}
 
 // Review Reducer
 const initialState = {};

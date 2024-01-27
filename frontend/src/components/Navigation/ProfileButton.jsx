@@ -14,7 +14,7 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+    e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
@@ -42,8 +42,12 @@ function ProfileButton({ user }) {
   };
 
   const handleNav = () => {
-    navigate('/spots/manage')
+    navigate('/spots/current')
   };
+
+  const manageReviews = () => {
+    navigate(`/reviews/current`)
+  }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -61,6 +65,12 @@ function ProfileButton({ user }) {
             <li>
               <button onClick={handleNav}>Manage Spots</button>
             </li>
+
+            <li>
+              <button onClick={manageReviews}>Manage Reviews</button>
+            </li>
+
+
             <li>
               <button onClick={logout}>Log Out</button>
             </li>

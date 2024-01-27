@@ -1,39 +1,53 @@
-import { useState } from "react";
-import { insertNewImage, insertNewSpot } from "../../store/spot";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { loadSpotsfromDB, updateCurrentSpot } from "../../store/spot";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
-import './NewSpot.css';
+import './UpdateSpot.css';
 
-const NewSpot = () => {
-    const [country, setCountry] = useState('');
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
-    const [description, setDescription] = useState('');
-    const [spotTitle, setSpotTitle] = useState('');
-    const [price, setPrice] = useState();
-    const [url1, setUrl1] = useState('');
-    const [url2, setUrl2] = useState('');
-    const [url3, setUrl3] = useState('');
-    const [url4, setUrl4] = useState('');
-    const [url5, setUrl5] = useState('');
+const UpdateSpot = () => {
 
-    const [err, setErr] = useState({});
-    const [imgErr, setImgErr] = useState({});
-
-
+    const {spotId} = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const spots = useSelector(state => Object.values(state.spots));
+    const currentSpot = spots.filter(spot => spot.id == spotId);
+
+    // console.log('spots from updates: ', spots);
+    // console.log('current spot: ', currentSpot);
+    // console.log('spotId: ', spotId);
+    // console.log('currentSpot country: ', currentSpot[0].country);
+
+
+    const [country, setCountry] = useState(currentSpot[0].country);
+    const [address, setAddress] = useState(currentSpot[0].address);
+    const [city, setCity] = useState(currentSpot[0].city);
+    const [state, setState] = useState(currentSpot[0].state);
+    const [lat, setLat] = useState(currentSpot[0].lat);
+    const [lng, setLng] = useState(currentSpot[0].lng);
+    const [description, setDescription] = useState(currentSpot[0].description);
+    const [spotTitle, setSpotTitle] = useState(currentSpot[0].name);
+    const [price, setPrice] = useState(currentSpot[0].price);
+    // const [url1, setUrl1] = useState();
+    // const [url2, setUrl2] = useState();
+    // const [url3, setUrl3] = useState();
+    // const [url4, setUrl4] = useState();
+    // const [url5, setUrl5] = useState();
+
+    const [err, setErr] = useState({});
+    // const [imgErr, setImgErr] = useState({});
+
+    useEffect(() => {
+        dispatch(loadSpotsfromDB());
+    }, [dispatch]);
+
 
     // handling submission of new spot
-    const submitNewSpot = async (e) => {
+    const updateTheSpot = async (e) => {
         e.preventDefault();
         setErr({});
-        setImgErr({});
+        // setImgErr({});
         const newSpotDetails = {
             country,
             address,
@@ -55,30 +69,16 @@ const NewSpot = () => {
             setErr({...(err) || {}, description: 'Descriotion needs a minimum of 30 characters.'});
             // return;
         }
-
-        if (!url1) {
-            setImgErr({imageRequired: 'Preview image is required.' });
-            // return;
-        }
         
         // console.log('errr: ', err);
-        // console.log('erri: ', imgErr);
-
-        // if (url1.toLowerCase().endsWith('.png') ||
-        //     url1.toLowerCase().endsWith('.jpg') ||
-        //     url1.toLowerCase().endsWith('.jpeg')) {
-        //         // return
-        //     }else{
-        //         setImgErr({ ...imgErr || {}, extension: 'Image URL must end in .png, .jpg, or .jpeg' })
-        // }
 
         // Checking if any validation error exists
-        if(Object.keys(err).length !== 0 || Object.keys(imgErr).length !== 0){
+        if(Object.keys(err).length !== 0){
             return;
         }
         // calling insert Thunk action creator
     
-        let result = await dispatch(insertNewSpot(newSpotDetails))
+        let result = await dispatch(updateCurrentSpot(newSpotDetails, spotId))
                      .catch(async (result) => {
                         const data = await result.json();
                         // console.log('calling insertNewSpot thunk form NewSpot.jsx', data);
@@ -89,34 +89,16 @@ const NewSpot = () => {
                             }
                             return;
                         }
-                     })
-
-                     if(result?.id){
-                        const spotId = result.id;
-                        const photoUrls = [url1, url2, url3, url4, url5].filter(url => url !== undefined);
-
-
-                        for (const url of photoUrls){
-                            const newImages = {
-                                url,
-                                preview: true,
-                            }
-                            if(url){
-                                await dispatch(insertNewImage(newImages, spotId)); // call the add image thunk action creator.
-                            }
-                        }
-
-                        // After insertion, empty the form
-                        setCountry('');
-
+                     });
+                     if(result.id){
                         navigate(`/spots/${result.id}`)
                      }
     }
 
     return (
         <div className="newSpotContainer">
-            <h1>Create a New Spot</h1>
-            <form onSubmit={submitNewSpot} className="newSpotForm">
+            <h1>Update your Spot</h1>
+            <form onSubmit={updateTheSpot} className="newSpotForm">
                 <div className="spotLocation firstSection">
                     <h2>Where&apos;s your place located?</h2>
                     <p>
@@ -170,24 +152,12 @@ const NewSpot = () => {
                     </div>
                         <span className="errors">{err.price && err.price}</span>
                 </div>
-                <div className="spotPhoto fifthSection">
-                    <h2>Liven up your spot with photos</h2>
-                    <p>
-                        Submit a link to at least one photo to publish your spot.
-                    </p>
-                    <input value={url1} onChange={e => setUrl1(e.target.value)} type="text" placeholder="Preview Image URL" />
-                    <span className="errors">{imgErr.imageRequired && imgErr.imageRequired}</span><span className="errors">{imgErr.extension && imgErr.extension}</span>
-                    <input value={url2} onChange={e => setUrl2(e.target.value)} type="text" placeholder="Image URL" />
-                    <input value={url3} onChange={e => setUrl3(e.target.value)} type="text" placeholder="Image URL" />
-                    <input value={url4} onChange={e => setUrl4(e.target.value)} type="text" placeholder="Image URL" />
-                    <input value={url5} onChange={e => setUrl5(e.target.value)} type="text" placeholder="Image URL" />
-                </div>
                 <div className="submitSection">
-                    <button>Create Spot</button>
+                    <button>Update Spot</button>
                 </div>
             </form>
         </div>
     );
 }
 
-export default NewSpot;
+export default UpdateSpot;
