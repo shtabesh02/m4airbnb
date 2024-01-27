@@ -87,7 +87,7 @@ export const insertReview = (reviewForm, spotId) => async (dispatch) => {
 
 
 // Thunk action to update the  current review
-export const updateCurrentReview = (updateDetails, reviewId) => async (dispatch) => {
+export const updateCurrentReview = (updateDetails, reviewId) => async () => {
     // console.log('updateReviewCalled: ', updateDetails)
     const response = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'PUT',

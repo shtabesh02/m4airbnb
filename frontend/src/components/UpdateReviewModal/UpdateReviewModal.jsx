@@ -5,11 +5,13 @@ import './UpdateReviewModal.css'
 
 import RatingStars from './RatingStar';
 import { loadReviewsfromDB, updateCurrentReview } from '../../store/review';
+
 const UpdateReviewModal =  ({ spotId, reviewId}) => {
 
     // const spotId = 1;
     // console.log('spotId from UpdateReviewModal: ', spotId)
     const dispatch = useDispatch();
+    // const navigate = useNavigate();
     //const sessionUser = useSelector((state) => state.session.user);
     const reviews = useSelector(state => Object.values(state.reviews));
     // console.log('reviews: ', reviews)
@@ -41,23 +43,23 @@ const UpdateReviewModal =  ({ spotId, reviewId}) => {
             review,
             stars: rating
         }
-        let result = await dispatch(updateCurrentReview(updatedReview, reviewId))
+        await dispatch(updateCurrentReview(updatedReview, reviewId))
           .then(closeModal)
-          .catch(async (res) => {
-            // console.log('res: ', res)
-            // const data = await res.json();
-            // console.log('when it is called show the result: ', data)
-            if (data && data.message) {
-                // console.log('data.errors: ', data.errors)
-                setErrors(data.errors);
-                //console.log(errors, errors)
-            }
-            //console.log(errors)
-            return;
-        });
-        if(result?.id){
-            navigate(`/reviews/current`)
-        }
+        //   .catch(async (res) => {
+        //     // console.log('res: ', res)
+        //     // const data = await res.json();
+        //     // console.log('when it is called show the result: ', data)
+        //     if (data && data.message) {
+        //         // console.log('data.errors: ', data.errors)
+        //         setErrors(data.errors);
+        //         //console.log(errors, errors)
+        //     }
+        //     //console.log(errors)
+        //     return;
+        // });
+        // if(result?.id){
+        //     navigate(`/reviews/current`)
+        // }
     };
     return (
         <div className='reviewContainerForm'>

@@ -11,8 +11,9 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     const allReviews = useSelector(state => Object.values(state.reviews))
     const reviews = allReviews.filter(review => review.spotId === Number(spotId))
 
-    const spot = useSelector(state => state.spots[spotId]);
+    // const spot = useSelector(state => state.spots[spotId]);
 
+    // console.log(spot);
     const spotOwnerId = useSelector(state => state.spots[spotId]?.ownerId);
 
 
@@ -45,7 +46,7 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
         if(!spotOwnerId || !spotId){
             dispatch(loadSpotsfromDB());
         }
-    },[spotOwnerId]);
+    },[spotOwnerId], spotId, dispatch);
 
 
     // If no reviews is found, and logged in user is not the owner
