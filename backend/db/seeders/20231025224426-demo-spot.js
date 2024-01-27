@@ -22,10 +22,10 @@ module.exports = {
       lng: -122.4730327,
       name: "App-Academy1",
       description: "Place where web developers are created",
-      price: 123,
+      price: 1000,
       createdAt: "2021-11-19 20:39:36",
       updatedAt: "2021-11-19 20:39:36",
-      avgRating: 4.5,
+      avgRating: 5,
       previewImage: "image url"
     },
     {
@@ -45,7 +45,7 @@ module.exports = {
       previewImage: "image url"
     },
     {
-      ownerId: 3,
+      ownerId: 2,
       address: "333 Disney Lane",
       city: "San Francisco",
       state: "California",
@@ -60,6 +60,54 @@ module.exports = {
       avgRating: 4.5,
       previewImage: "image url"
     },
+    {
+      ownerId: 2,
+      address: "444 Disney Lane",
+      city: "San Francisco",
+      state: "California",
+      country: "United States of America",
+      lat: 37.7645358,
+      lng: -122.4730327,
+      name: "App-Academy4",
+      description: "Place where web developers are created",
+      price: 123,
+      createdAt: "2021-11-19 20:39:36",
+      updatedAt: "2021-11-19 20:39:36",
+      avgRating: 4.5,
+      previewImage: "image url"
+    },
+    {
+      ownerId: 3,
+      address: "555 Disney Lane",
+      city: "San Francisco",
+      state: "California",
+      country: "United States of America",
+      lat: 37.7645358,
+      lng: -122.4730327,
+      name: "App-Academy5",
+      description: "Place where web developers are created",
+      price: 123,
+      createdAt: "2021-11-19 20:39:36",
+      updatedAt: "2021-11-19 20:39:36",
+      avgRating: 4.5,
+      previewImage: "image url"
+    },
+    {
+      ownerId: 3,
+      address: "666 Disney Lane",
+      city: "San Francisco",
+      state: "California",
+      country: "United States of America",
+      lat: 37.7645358,
+      lng: -122.4730327,
+      name: "App-Academy6",
+      description: "Place where web developers are created",
+      price: 123,
+      createdAt: "2021-11-19 20:39:36",
+      updatedAt: "2021-11-19 20:39:36",
+      avgRating: 4.5,
+      previewImage: "image url"
+    },
    ]);
   },
 
@@ -67,7 +115,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: {[Op.in]: ['App-Academy1', 'App-Academy2', 'App-Academy3']}
+      name: {[Op.in]: ['App-Academy1', 'App-Academy2', 'App-Academy3', 'App-Academy4', 'App-Academy5', 'App-Academy6']}
     }, {});
   }
 };

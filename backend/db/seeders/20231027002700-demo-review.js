@@ -19,12 +19,54 @@ module.exports = {
       },
       {
         spotId: 2,
+        userId: 1,
+        review: 'Gorgeous',
+        stars: 5
+      },
+      {
+        spotId: 3,
+        userId: 3,
+        review: 'Amazing',
+        stars: 5
+      },
+      {
+        spotId: 1,
+        userId: 1,
+        review: 'Awesome',
+        stars: 5
+      },
+      {
+        spotId: 2,
         userId: 2,
         review: 'Gorgeous',
         stars: 5
       },
       {
         spotId: 3,
+        userId: 3,
+        review: 'Amazing',
+        stars: 5
+      },
+      {
+        spotId: 1,
+        userId: 1,
+        review: 'Awesome',
+        stars: 5
+      },
+      {
+        spotId: 2,
+        userId: 2,
+        review: 'Gorgeous',
+        stars: 5
+      },
+      {
+        spotId: 3,
+        userId: 3,
+        review: 'Amazing',
+        stars: 5
+      },
+      {
+        spotId: 5,
         userId: 3,
         review: 'Amazing',
         stars: 5
