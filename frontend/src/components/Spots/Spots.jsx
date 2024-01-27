@@ -19,7 +19,6 @@ const Spots = () => {
             <h1>All the spots are here...</h1>   
             <div className='theSpotContainer'>
                 {allSpots.map((spot) => (
-                    
                     <div key={spot.id} className='individualSpotContainer'>
                         <NavLink className="nav-link" to={`/spots/${spot.id}`}>
                         <div className="spotPhoto">
