@@ -12,7 +12,6 @@ const Spots = () => {
     useEffect(() => {
         dispatch(loadSpotsfromDB())
     }, [dispatch]);
-    
     // console.log('from Spots.jsx', allSpots)
     return (
         <div>
