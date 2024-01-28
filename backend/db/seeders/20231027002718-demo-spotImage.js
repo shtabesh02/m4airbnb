@@ -62,6 +62,7 @@ module.exports = {
       url: 'https://res.cloudinary.com/dqvwvomz1/image/upload/v1706400576/alberto-castillo-q-mx4mSkK9zeo-unsplash_flcrgd.jpg',
       preview: true
     }
+    
    ]);
   },
 
