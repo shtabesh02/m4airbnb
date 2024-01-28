@@ -103,7 +103,7 @@ function SpotDetails() {
                         <div className='spotdetailInfoCallout'>
                             <div>${spot && spot.price}/night</div>
                             <div>
-                                <i className='fas fa-star' />{spot && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
+                                <i className='fas fa-star' />{spot && spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
 
                                 {/* {spot && spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'} */}
                                 {spot && spot.numReviews > 0 && (
