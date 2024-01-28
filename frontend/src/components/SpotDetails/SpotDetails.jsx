@@ -15,15 +15,18 @@ const SpotDetails = () => {
     const spot = useSelector(state => state.spots[spotId])
     
     // console.log('spot: ', spot);
-    // console.log('spot.numReviews: ', spot.numReviews);
-    // console.log('spot.avgRating: ', spot.avgRating);
-   
+    
     
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(loadSpotDetailsfromDB(spotId))
     }, [dispatch, spotId]);
-
+    
+    const avgRating = Number((spot.avgRating).toFixed(1));
+    const numReviews = Number((spot.numReviews).toFixed(1));
+    
+    // console.log('spot.numReviews: ', numReviews);
+    // console.log('spot.avgRating: ', avgRating);
 
     const currentUser = useSelector(state => state.session.user);
     const reviews = useSelector(state => Object.values(state.reviews));
@@ -107,14 +110,17 @@ const SpotDetails = () => {
                             <div>${spot.price}/night</div>
                             <div>
                                 <i className='fa-solid fa-star' />
-                                {spot.avgRating ? spot.avgRating.toFixed(1): 'NEW'}
+
+                                {spot.avgRating ? avgRating: 'NEW'}
+
+                                {/* {spot.avgRating ? spot.avgRating.toFixed(1): 'NEW'} */}
 
                                 {/* {spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'} */}
 
-                                {spot.numReviews > 0 && (
+                                {numReviews > 0 && (
                                     <>
                                         <span> · </span>
-                                        {spot.numReviews == 1 ? '1 Review' : `${spot.numReviews} Reviews`}
+                                        {numReviews == 1 ? '1 Review' : `${numReviews} Reviews`}
                                     </>
                                 )}
                             </div>
@@ -130,7 +136,8 @@ const SpotDetails = () => {
             <div className="reviews">
                 <div>
                     <div>
-                        <h3 className='spotdetail-rating-dup'>
+                        {/* After the test is conmplete uncomment it */}
+                        {/* <h3 className='spotdetail-rating-dup'>
                             <i className='fa-solid fa-star' />
                             {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
                             {spot.numReviews > 0 && (
@@ -139,7 +146,7 @@ const SpotDetails = () => {
                                     {spot.numReviews == 1 ? '1 Review' : `${spot.numReviews} Reviews`}
                                 </>
                             )}
-                        </h3>
+                        </h3> */}
                     </div>
 
                     {(currentUser && !alreadyReviewd && currentUser?.id !== spot?.Owner?.id) && (
