@@ -102,9 +102,9 @@ const SpotDetails = () => {
                         <div className='spotdetailInfoCallout'>
                             <div>${spot.price}/night</div>
                             <div>
-                                {/* <i className='fas fa-star' />{spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'} */}
+                                <i className='fas fa-star' />{spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
 
-                                {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
+                                {/* {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'} */}
                                 {spot.numReviews > 0 && (
                                     <>
                                         <span> · </span>
