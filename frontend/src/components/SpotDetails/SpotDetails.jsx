@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 // import { loadSpotDetailsfromDB } from "../../store/spot";
 import Reviews from "../Reviews/Reviews";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal/PostReviewModal";
 import './SpotDetails.css'
+import { loadSpotDetailsfromDB } from "../../store/spot";
 
 function SpotDetails() {
     const { spotId } = useParams();
 
     const spot = useSelector(state => state.spots[spotId]);
-    console.log('spot: ', spot)
+    // console.log('spot: ', spot)
     // const allSpots = useSelector(state => Object.values(state.spots));
 
     const currentUser = useSelector(state => state.session.user);
     const reviews = useSelector(state => Object.values(state.reviews));
     const currentSpotReviews = reviews.filter(review => review.spotId == spotId);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
 
 
@@ -26,11 +27,9 @@ function SpotDetails() {
     //     dispatch(loadSpotDetailsfromDB(spotId))
     // }, [dispatch, spotId]);
 
-    // useEffect(() => {
-    //     if (!spot) {
-    //         dispatch(loadSpotDetailsfromDB(spotId));
-    //     }
-    // }, [dispatch, spot, spotId]);
+    useEffect(() => {
+            dispatch(loadSpotDetailsfromDB(spotId));
+    }, [dispatch, spotId]);
 
 
     // console.log('spot from SpotDetails.jsx: ', spot)

@@ -46,7 +46,7 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
         if(!spotOwnerId || !spotId){
             dispatch(loadSpotsfromDB());
         }
-    },[spotOwnerId], spotId, dispatch);
+    },[spotOwnerId, spotId, dispatch]);
 
 
     // If no reviews is found, and logged in user is not the owner
