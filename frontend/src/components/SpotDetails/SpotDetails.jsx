@@ -103,8 +103,9 @@ function SpotDetails() {
                         <div className='spotdetailInfoCallout'>
                             <div>${spot && spot.price}/night</div>
                             <div>
-                                <i className='fas fa-star' />
-                                {spot && spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
+                                <i className='fas fa-star' />{spot && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
+
+                                {/* {spot && spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'} */}
                                 {spot && spot.numReviews > 0 && (
                                     <>
                                         <span> · </span>
@@ -116,7 +117,6 @@ function SpotDetails() {
                         <div className='spotdetail-reserve-button-container'>
                             <button className='spotdetail-reserve-button' onClick={() => alert('Feature Coming Soon...')}>Reserve</button>
                         </div>
-
                     </div>
                     </div>
             </div>
