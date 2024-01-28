@@ -15,6 +15,8 @@ const SpotDetails = () => {
     const spot = useSelector(state => state.spots[spotId])
     
     // console.log('spot: ', spot);
+    // console.log('spot.numReviews: ', spot.numReviews);
+    // console.log('spot.avgRating: ', spot.avgRating);
    
     
     const dispatch = useDispatch();
@@ -104,13 +106,15 @@ const SpotDetails = () => {
                         <div className='spotdetailInfoCallout'>
                             <div>${spot.price}/night</div>
                             <div>
-                                <i className='fas fa-star' />{spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
+                                <i className='fa-solid fa-star' />
+                                {spot.avgRating ? spot.avgRating.toFixed(1): 'NEW'}
 
-                                {/* {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'} */}
+                                {/* {spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'} */}
+
                                 {spot.numReviews > 0 && (
                                     <>
                                         <span> · </span>
-                                        {spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`}
+                                        {spot.numReviews == 1 ? '1 Review' : `${spot.numReviews} Reviews`}
                                     </>
                                 )}
                             </div>
@@ -127,12 +131,12 @@ const SpotDetails = () => {
                 <div>
                     <div>
                         <h3 className='spotdetail-rating-dup'>
-                            <i className='fas fa-star' />
+                            <i className='fa-solid fa-star' />
                             {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
                             {spot.numReviews > 0 && (
                                 <>
                                     <span> · </span>
-                                    {spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`}
+                                    {spot.numReviews == 1 ? '1 Review' : `${spot.numReviews} Reviews`}
                                 </>
                             )}
                         </h3>
