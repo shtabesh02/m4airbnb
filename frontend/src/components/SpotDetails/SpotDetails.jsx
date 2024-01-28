@@ -22,8 +22,8 @@ const SpotDetails = () => {
         dispatch(loadSpotDetailsfromDB(spotId))
     }, [dispatch, spotId]);
     
-    const avgRating = Number(spot.avgRating);
-    const numReviews = Number(spot.numReviews);
+    const avgRating = Number(spot?.avgRating);
+    const numReviews = Number(spot?.numReviews);
     
     // console.log('spot.numReviews: ', numReviews);
     // console.log('spot.avgRating: ', avgRating);
