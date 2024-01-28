@@ -1,7 +1,7 @@
 
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { loadSpotDetailsfromDB } from '../../store/spot';
+import { loadSpotDetailsfromDB, loadSpotsfromDB } from '../../store/spot';
 import { useEffect, useState } from 'react';
 import Reviews from "../Reviews/Reviews";
 import OpenModalButton from "../OpenModalButton";
@@ -22,8 +22,8 @@ const SpotDetails = () => {
     //fetch all the spot details info when loading a page
     useEffect(() => {
         //console.log(is spotActions called?)
-        // dispatch(getSpotDetailThunk(spotId))
-        dispatch(loadSpotDetailsfromDB(spotId))
+        dispatch(loadSpotsfromDB());
+        // dispatch(loadSpotDetailsfromDB(spotId))
 
     }, [dispatch, spotId])
 
