@@ -22,8 +22,8 @@ const SpotDetails = () => {
         dispatch(loadSpotDetailsfromDB(spotId))
     }, [dispatch, spotId]);
     
-    const avgRating = Number((spot.avgRating).toFixed(1));
-    const numReviews = Number((spot.numReviews).toFixed(1));
+    const avgRating = Number(spot.avgRating);
+    const numReviews = Number(spot.numReviews);
     
     // console.log('spot.numReviews: ', numReviews);
     // console.log('spot.avgRating: ', avgRating);
