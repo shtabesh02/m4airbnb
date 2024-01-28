@@ -5,29 +5,22 @@ import Reviews from "../Reviews/Reviews";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal/PostReviewModal";
 import './SpotDetails.css'
-import { loadSpotDetailsfromDB } from "../../store/spot";
+import { loadSpotsfromDB } from "../../store/spot";
 
 const SpotDetails = () => {
     const { spotId } = useParams();
 
     const spot = useSelector(state => state.spots[spotId]);
-    // console.log('spot: ', spot)
-    // const allSpots = useSelector(state => Object.values(state.spots));
+    // const spot = useSelector(state => state.spots);
 
     const currentUser = useSelector(state => state.session.user);
     const reviews = useSelector(state => Object.values(state.reviews));
     const currentSpotReviews = reviews.filter(review => review.spotId == spotId);
     const dispatch = useDispatch();
 
-
-
-    // load all the spot details
-    // useEffect(()=> {
-    //     dispatch(loadSpotDetailsfromDB(spotId))
-    // }, [dispatch, spotId]);
-
     useEffect(() => {
-            dispatch(loadSpotDetailsfromDB(spotId));
+            // dispatch(loadSpotDetailsfromDB(spotId));
+            dispatch(loadSpotsfromDB())
     }, [dispatch, spotId]);
 
 
