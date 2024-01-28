@@ -19,9 +19,9 @@ const SpotDetails = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-            // dispatch(loadSpotDetailsfromDB(spotId));
-            dispatch(loadSpotsfromDB())
-    }, [dispatch, spotId]);
+        // dispatch(loadSpotDetailsfromDB(spotId));
+        dispatch(loadSpotsfromDB())
+    }, [dispatch]);
 
 
     // console.log('spot from SpotDetails.jsx: ', spot)
@@ -44,7 +44,11 @@ const SpotDetails = () => {
     }, [currentUser, spot, currentSpotReviews, alreadyReviewd]);
 
     return (
+
         <div className='spotDetailContainer'>
+            {spot && (
+                <div>
+           
             <div className="spotPhotos">
                 <h1 className='spotTitle'>{spot.name}</h1>
                 <h3 className='cityNstate'>{spot.city}, {spot.state}, {spot.country}</h3>
@@ -110,7 +114,7 @@ const SpotDetails = () => {
                             <button className='spotdetail-reserve-button' onClick={() => alert('Feature Coming Soon...')}>Reserve</button>
                         </div>
                     </div>
-                    </div>
+                </div>
             </div>
 
             <hr className="horizontal-line" />
@@ -128,7 +132,7 @@ const SpotDetails = () => {
                             )}
                         </h3>
                     </div>
-                   
+
                     {(currentUser && !alreadyReviewd && currentUser?.id !== spot?.Owner?.id) && (
                         <OpenModalButton
                             modalComponent={<PostReviewModal spotId={spotId} />}
@@ -136,8 +140,10 @@ const SpotDetails = () => {
                         />
                     )}
                 </div>
-            <Reviews spotId={ spotId } setAlreadyReviewed={setAlreadyReviewd}/>
+                <Reviews spotId={spotId} setAlreadyReviewed={setAlreadyReviewd} />
             </div>
+            </div>
+            )}
         </div>
     );
 }
