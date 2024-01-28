@@ -11,8 +11,6 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     const allReviews = useSelector(state => Object.values(state.reviews))
     const reviews = allReviews.filter(review => review.spotId === Number(spotId))
 
-    // const spot = useSelector(state => state.spots[spotId]);
-
     // console.log(spot);
     const spotOwnerId = useSelector(state => state.spots[spotId]?.ownerId);
 
@@ -26,16 +24,6 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
 
     // soring reviews descending
     const sortedReviews = reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-
-    // useEffect(() => {
-    //     if (!spotOwnerId) {
-    //         dispatch(loadSpotDetailsfromDB(spotId));
-    //     }
-    // }, [dispatch,spotOwnerId, spot, spotId]);
-
-
-    // console.log('spot from Reviews.jsx: ', spot)
 
     useEffect(() => {
         dispatch(loadReviewsfromDB(spotId));
