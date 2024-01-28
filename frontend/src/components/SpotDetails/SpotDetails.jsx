@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-// import { loadSpotDetailsfromDB } from "../../store/spot";
 import Reviews from "../Reviews/Reviews";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal/PostReviewModal";
 import './SpotDetails.css'
 import { loadSpotDetailsfromDB } from "../../store/spot";
 
-function SpotDetails() {
+const SpotDetails = () => {
     const { spotId } = useParams();
 
     const spot = useSelector(state => state.spots[spotId]);
