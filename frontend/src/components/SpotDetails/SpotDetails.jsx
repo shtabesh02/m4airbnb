@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { loadSpotDetailsfromDB } from "../../store/spot";
+// import { loadSpotDetailsfromDB } from "../../store/spot";
 import Reviews from "../Reviews/Reviews";
 import OpenModalButton from "../OpenModalButton";
 import PostReviewModal from "../PostReviewModal/PostReviewModal";
@@ -9,14 +9,15 @@ import './SpotDetails.css'
 
 function SpotDetails() {
     const { spotId } = useParams();
-    // const spot = useSelector(state => Object.values(state.spots[spotId]));
+
     const spot = useSelector(state => state.spots[spotId]);
+    console.log('spot: ', spot)
     // const allSpots = useSelector(state => Object.values(state.spots));
 
     const currentUser = useSelector(state => state.session.user);
     const reviews = useSelector(state => Object.values(state.reviews));
     const currentSpotReviews = reviews.filter(review => review.spotId == spotId);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
 
 
@@ -25,11 +26,11 @@ function SpotDetails() {
     //     dispatch(loadSpotDetailsfromDB(spotId))
     // }, [dispatch, spotId]);
 
-    useEffect(() => {
-        if (!spot) {
-            dispatch(loadSpotDetailsfromDB(spotId));
-        }
-    }, [dispatch, spot, spotId]);
+    // useEffect(() => {
+    //     if (!spot) {
+    //         dispatch(loadSpotDetailsfromDB(spotId));
+    //     }
+    // }, [dispatch, spot, spotId]);
 
 
     // console.log('spot from SpotDetails.jsx: ', spot)
@@ -54,38 +55,38 @@ function SpotDetails() {
     return (
         <div className='spotDetailContainer'>
             <div className="spotPhotos">
-                <h1 className='spotTitle'>{spot && spot.name}</h1>
-                <h3 className='cityNstate'>{spot && spot.city}, {spot && spot.state}, {spot && spot.country}</h3>
+                <h1 className='spotTitle'>{spot.name}</h1>
+                <h3 className='cityNstate'>{spot.city}, {spot.state}, {spot.country}</h3>
                 <div className='spotDetail'>
 
                     <div className="leftImage">
-                        {spot && spot.SpotImages && <img
+                        {spot.SpotImages && <img
                             className='imgLeft'
-                            src={spot && spot.SpotImages[0]?.url}
-                            alt={spot && spot.name}
+                            src={spot.SpotImages[0]?.url}
+                            alt={spot.name}
                         />}
                     </div>
 
                     <div className="rightImages">
-                        {spot && spot.SpotImages?.length > 1 && <img
+                        {spot.SpotImages?.length > 1 && <img
                             className='tl'
-                            src={spot && spot.SpotImages[1]?.url}
-                            alt={spot && spot.name}
+                            src={spot.SpotImages[1]?.url}
+                            alt={spot.name}
                         />}
-                        {spot && spot.SpotImages?.length > 2 && <img
+                        {spot.SpotImages?.length > 2 && <img
                             className='tr'
-                            src={spot && spot.SpotImages[2]?.url}
-                            alt={spot && spot.name}
+                            src={spot.SpotImages[2]?.url}
+                            alt={spot.name}
                         />}
-                        {spot && spot.SpotImages?.length > 3 && <img
+                        {spot.SpotImages?.length > 3 && <img
                             className='br'
-                            src={spot && spot.SpotImages[3]?.url}
-                            alt={spot && spot.name}
+                            src={spot.SpotImages[3]?.url}
+                            alt={spot.name}
                         />}
-                        {spot && spot.SpotImages?.length > 4 && <img
+                        {spot.SpotImages?.length > 4 && <img
                             className='bl'
-                            src={spot && spot.SpotImages[4]?.url}
-                            alt={spot && spot.name}
+                            src={spot.SpotImages[4]?.url}
+                            alt={spot.name}
                         />}
                     </div>
 
@@ -95,21 +96,21 @@ function SpotDetails() {
 
             <div className="reviewSummaryInfo">
                 <div className='hostDetails'>
-                    {spot && spot.Owner && <h2>Hosted by {spot && spot.Owner.firstName} {spot && spot.Owner.lastName}</h2>}
-                    <p>{spot && spot.description}</p>
+                    {spot.Owner && <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>}
+                    <p>{spot.description}</p>
                 </div>
                 <div className="callOutInfo">
                     <div className='spotDetailInfoContainer'>
                         <div className='spotdetailInfoCallout'>
-                            <div>${spot && spot.price}/night</div>
+                            <div>${spot.price}/night</div>
                             <div>
-                                <i className='fas fa-star' />{spot && spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
+                                {/* <i className='fas fa-star' />{spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'} */}
 
-                                {/* {spot && spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'} */}
-                                {spot && spot.numReviews > 0 && (
+                                {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
+                                {spot.numReviews > 0 && (
                                     <>
                                         <span> · </span>
-                                        {spot && spot.numReviews === 1 ? '1 Review' : `${spot && spot.numReviews} Reviews`}
+                                        {spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`}
                                     </>
                                 )}
                             </div>
@@ -127,17 +128,17 @@ function SpotDetails() {
                     <div>
                         <h3 className='spotdetail-rating-dup'>
                             <i className='fas fa-star' />
-                            {spot && spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
-                            {spot && spot.numReviews > 0 && (
+                            {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
+                            {spot.numReviews > 0 && (
                                 <>
                                     <span> · </span>
-                                    {spot && spot.numReviews === 1 ? '1 Review' : `${spot && spot.numReviews} Reviews`}
+                                    {spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`}
                                 </>
                             )}
                         </h3>
                     </div>
                    
-                    {(spot && currentUser && !alreadyReviewd && currentUser?.id !== spot?.Owner?.id) && (
+                    {(currentUser && !alreadyReviewd && currentUser?.id !== spot?.Owner?.id) && (
                         <OpenModalButton
                             modalComponent={<PostReviewModal spotId={spotId} />}
                             buttonText='Post Your Review'
