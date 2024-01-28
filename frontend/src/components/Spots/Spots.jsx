@@ -31,7 +31,9 @@ const Spots = () => {
                                     {spot.city}, {spot.state}
                                 </div>
                                 <div>
-                                    <i className='fa-solid fa-star'>{spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}</i>
+                                    <i className='fa-solid fa-star' />{spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'}
+
+                                    {/* <i className='fa-solid fa-star'>{spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}</i> */}
                                 </div>
                             </div>
                             <div className="price">
