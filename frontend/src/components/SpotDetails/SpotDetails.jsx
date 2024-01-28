@@ -57,7 +57,7 @@ const SpotDetails = () => {
     return (
 
         <div className='spotDetailContainer'>
-            <span>{spot.name}</span>
+            
            
             <div className="spotPhotos">
                 <h1 className='spotTitle'>{spot.name}</h1>
@@ -113,10 +113,6 @@ const SpotDetails = () => {
 
                                 {spot.avgRating ? avgRating: 'NEW'}
 
-                                {/* {spot.avgRating ? spot.avgRating.toFixed(1): 'NEW'} */}
-
-                                {/* {spot.numReviews && !isNaN(spot.avgRating) ? spot.avgRating.toFixed(1) : 'NEW'} */}
-
                                 {numReviews > 0 && (
                                     <>
                                         <span> · </span>
@@ -136,17 +132,17 @@ const SpotDetails = () => {
             <div className="reviews">
                 <div>
                     <div>
-                        {/* After the test is conmplete uncomment it */}
-                        {/* <h3 className='spotdetail-rating-dup'>
+                        
+                        <h3 className='spotdetail-rating-dup'>
                             <i className='fa-solid fa-star' />
-                            {spot.avgRating ? spot.avgRating.toFixed(1) : 'NEW'}
+                            {spot.avgRating ? avgRating : 'NEW'}
                             {spot.numReviews > 0 && (
                                 <>
                                     <span> · </span>
-                                    {spot.numReviews == 1 ? '1 Review' : `${spot.numReviews} Reviews`}
+                                    {numReviews == 1 ? '1 Review' : `${numReviews} Reviews`}
                                 </>
                             )}
-                        </h3> */}
+                        </h3>
                     </div>
 
                     {(currentUser && !alreadyReviewd && currentUser?.id !== spot?.Owner?.id) && (

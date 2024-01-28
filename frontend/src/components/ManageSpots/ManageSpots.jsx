@@ -12,21 +12,26 @@ const ManageSpot = () => {
     const navigate = useNavigate();
     const currentUser = useSelector(state => state.session.user.id);
     const unfilteredSpots = useSelector(state => Object.values(state.spots));
-    const spots = unfilteredSpots.filter(spot => spot.id == currentUser);
-
-    // console.log('spots: ', spots)
-    // console.log('user: ', useSelector(state => state.session))
     // console.log('currentUser: ', currentUser);
+    // console.log('unfilteredSpots: ', unfilteredSpots);
+    const spots = unfilteredSpots.filter(spot => spot.ownerId == currentUser);
+
+    // console.log('spots: ', spots);
+
+
 
     useEffect(() => {
         dispatch(loadCurrentSpotsfromDB());
-    }, [dispatch]);
+    }, [dispatch, spots]);
 
     const updateSpot = (spotId) => {
         navigate(`/spots/${spotId}/edit`)
 
     }
 
+    if(!spots){
+        return <h3>Loading...</h3>
+    }
 
     return(
         <div>
