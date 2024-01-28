@@ -21,8 +21,9 @@ const SpotDetails = () => {
     useEffect(() => {
         dispatch(loadSpotDetailsfromDB(spotId))
     }, [dispatch, spotId]);
-    
-    const avgRating = Number(spot?.avgRating);
+    // Number.parseFloat(x).toFixed(2)
+    // const avgRating = Number(spot?.avgRating); // works fine
+    const avgRating = Number.parseFloat(spot?.avgRating).toFixed(1);
     const numReviews = Number(spot?.numReviews);
     
     // console.log('spot.numReviews: ', numReviews);
