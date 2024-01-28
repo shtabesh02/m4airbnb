@@ -43,6 +43,11 @@ const SpotDetails = () => {
         }
     }, [currentUser, spot, currentSpotReviews, alreadyReviewd]);
 
+
+    if(!spot){
+        return <i>Loading....</i>
+    }
+    
     return (
 
         <div className='spotDetailContainer'>
