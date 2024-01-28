@@ -13,34 +13,38 @@ const Spots = () => {
         dispatch(loadSpotsfromDB())
     }, [dispatch]);
     // console.log('from Spots.jsx', allSpots)
+
+  
     return (
         <div>
             <h1>All the spots are here...</h1>   
             <div className='theSpotContainer'>
                 {allSpots && allSpots.map((spot) => (
                     <div key={spot.id} className='individualSpotContainer'>
-                        <NavLink className="nav-link" to={`/spots/${spot.id}`}>
-                        <div className="spotPhoto">
-                            <img
-                                src={spot.previewImage}
-                                alt={spot.name}
-                                title={spot.name} />
-                        </div>
-                        <div className="spotInfo">
-                            <div className="city-and-rating">
-                                <div>
-                                    {spot.city}, {spot.state}
+                        {spot &&(
+                            <NavLink className="nav-link" to={`/spots/${spot.id}`}>
+                            <div className="spotPhoto">
+                                <img
+                                    src={spot.previewImage}
+                                    alt={spot.name}
+                                    title={spot.name} />
+                            </div>
+                            <div className="spotInfo">
+                                <div className="city-and-rating">
+                                    <div>
+                                        {spot.city}, {spot.state}
+                                    </div>
+                                    <div>
+                                    
+                                        <i className='fa-solid fa-star' />{spot.avgRating ? Number.parseFloat(spot.avgRating).toFixed(1) : 'NEW'}
+                                    </div>
                                 </div>
-                                <div>
-                                
-                                    <i className='fa-solid fa-star' />{spot.numReviews ? Number.parseFloat(spot?.avgRating).toFixed(1) : 'NEW'}
+                                <div className="price">
+                                    ${spot.price} night
                                 </div>
                             </div>
-                            <div className="price">
-                                ${spot.price} night
-                            </div>
-                        </div>
-                        </NavLink>
+                            </NavLink>
+                        )}
                     </div>
                 ))}
             </div>
