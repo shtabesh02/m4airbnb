@@ -35,10 +35,10 @@ export const loadSpotsfromDB = () => async (dispatch) => {
 // Thunk action to load the spots for the current user
 export const loadCurrentSpotsfromDB = () => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/current`);
-    console.log('from current user thunk...', response)
+    // console.log('from current user thunk...', response)
     if(response.ok){
         const data = await response.json();
-        console.log('spot data from thunk: ', data)
+        // console.log('spot data from thunk: ', data)
         dispatch(loadSpots(data.Spots));
         return data;
     }else{

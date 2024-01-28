@@ -22,7 +22,7 @@ const ManageSpot = () => {
 
     useEffect(() => {
         dispatch(loadCurrentSpotsfromDB());
-    }, [dispatch, spots]);
+    }, [dispatch]);   // when the spots was in dependency, it was working but a loop was there.
 
     const updateSpot = (spotId) => {
         navigate(`/spots/${spotId}/edit`)
