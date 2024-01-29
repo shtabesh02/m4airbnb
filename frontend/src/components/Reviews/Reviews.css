@@ -1,0 +1,12 @@
+.reviewContainer{
+    margin: 5px;
+    padding: 5px;
+}
+
+.reviewerName{
+    font-weight: bold;
+}
+
+.reviewDate{
+    color: rgb(121, 109, 94);
+}

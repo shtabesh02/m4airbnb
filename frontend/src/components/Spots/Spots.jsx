@@ -16,8 +16,7 @@ const Spots = () => {
 
   
     return (
-        <div>
-            <h1>All the spots are here...</h1>   
+        <div> 
             <div className='theSpotContainer'>
                 {allSpots && allSpots.map((spot) => (
                     <div key={spot.id} className='individualSpotContainer'>

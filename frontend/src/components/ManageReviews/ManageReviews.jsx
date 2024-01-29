@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-// import Reviews from "../Reviews/Reviews";
-// import { useNavigate } from "react-router-dom";
 import { loadCurrentUserReviewfromDB } from "../../store/review";
 import { useEffect } from "react";
 import OpenModalButton from "../OpenModalButton";
 import DeleteReviewModal from "../DeleteReview/DeleteReviewModal";
 import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
+
+import './ManageReviews.css';
 
 const ManageReviews = () => {
     
@@ -34,8 +34,8 @@ const ManageReviews = () => {
             <h1>Manage Reviews</h1>
             {sortedReviews.map(review => (
                     <div className='reviewContainer' key={review.id}>
-                        <div>{review.User.firstName}</div>
-                        <div>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
+                        <div className="reviewerName">{review.User.firstName}</div>
+                        <div className="reviewDate">{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
                         <div>{review.review}</div>
                         <div>
 

@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadReviewsfromDB } from "../../store/review";
 import { loadSpotDetailsfromDB, loadSpotsfromDB } from '../../store/spot';
-// import './Reviews.css'; // create this css file later
+import './Reviews.css';
 import OpenModalButton from  '../OpenModalButton/OpenModalButton'
 import DeleteReviewModal from '../DeleteReview/DeleteReviewModal';
 
@@ -11,11 +11,7 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     const allReviews = useSelector(state => Object.values(state.reviews))
     const reviews = allReviews.filter(review => review.spotId === Number(spotId))
 
-    // console.log(spot);
     const spotOwnerId = useSelector(state => state.spots[spotId]?.ownerId);
-
-
-    // console.log('spot owner id: ', spotOwnerId)
     
     const currentUserId = useSelector(state => state.session.user?.id)
     
@@ -48,8 +44,8 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
         <div>
             {sortedReviews.map(review => (
                     <div className='reviewContainer' key={review.id}>
-                        <div>{review.User.firstName}</div>
-                        <div>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
+                        <div className='reviewerName'>{review.User.firstName}</div>
+                        <div className='reviewDate'>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
                         <div>{review.review}</div>
                         <div>
                             {currentUserId === review?.User?.id && (

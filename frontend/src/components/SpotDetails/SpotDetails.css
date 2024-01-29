@@ -1,57 +1,97 @@
 .spotDetailContainer{
     display: flex;
     flex-direction: column;
+    justify-content:left;
+
     margin: 5px;
     padding: 5px;
 }
+
+.spotinformation{
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  padding: 5px;
+  
+}
 .spotDetail {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
   }
   
-  .leftImage{
-    width: 45%;
+  .spotDetail .leftImage{
+    width: 50%;
+  
   }
 
+  .leftImage{
+    display: flex;
+    justify-content:left;
+  }
   .leftImage img{
-    width: 600px;
-    height: 430px;
+    width: 680px;
+    height: auto;
     padding: 5px;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 20px 0px 0px 20px;
   }
   .rightImages{
-    width: 45%;
+    width: 50%;
+ 
+    display: flex;
+    justify-content:right;
+    flex-wrap: wrap;
   }
   
   .rightImages img{
-    width: 300px;
-    height: 209px;
+    width: 330px;
+    height: 220px;
     padding: 5px;
   }
 
   .rightImages .tr{
-    border-top-right-radius: 10px;
+    border-top-right-radius: 20px;
   }
 
   .rightImages .bl{
-    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 20px;
   }
 
   .reviewSummaryInfo{
     display: flex;
+    justify-content: space-between;
   }
 
   .reviewSummaryInfo .hostDetails{
     width: 70%;
+
   }
 
   .reviewSummaryInfo .callOutInfo{
-    width: 30;
+    width: 20%;
+    border: solid black 1px;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .callOutInfo .spotdetailInfoCallout{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+  }
+
+  .callOutInfo .reserveIt{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
   }
   .horizontal-line {
     border: none;
     height: 1px;
     background-color: black;
     margin: 20px 0; /* Adjust margin as needed */
-  }  
+  }
+
+  
