@@ -53,7 +53,7 @@ const ManageSpot = () => {
                                     {spot.city}, {spot.state}
                                 </div>
                                 <div>
-                                    <i>{spot.avgRating} star</i>
+                                <i className='fa-solid fa-star' />{spot.avgRating ? Number.parseFloat(spot.avgRating).toFixed(1) : 'NEW'}
                                 </div>
                             </div>
                             <div className="price">
