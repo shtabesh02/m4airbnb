@@ -62,10 +62,6 @@ const UpdateReviewModal =  ({ spotId, reviewId}) => {
                 >
                 </textarea>
 
-                {/* <rating>
-                    onChange={(e) => setRating(e.target.value)}
-
-                <rating/> */}
                 {errors.stars && (<div className='newspot-form-required-input'>{errors.stars}</div>)}
 
                 <RatingStars rating={rating} onChange={onChange}/>
