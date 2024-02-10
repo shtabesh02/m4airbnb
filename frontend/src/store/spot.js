@@ -24,7 +24,7 @@ export const loadSpotsfromDB = () => async (dispatch) => {
         const data = await response.json();
         // console.log('spot data from thunk: ', data)
         dispatch(loadSpots(data.Spots));
-        return data;
+        // return data;
     }else{
         const e = await response.json();
         return e;

@@ -30,10 +30,14 @@ const ManageReviews = () => {
     // }
 
     return(
-        <div>
+        <div className='reviewContainer'>
             <h1>Manage Reviews</h1>
+            <div >
+            <ol>
+
             {sortedReviews.map(review => (
-                    <div className='reviewContainer' key={review.id}>
+                <li key={review.id}>
+                    
                         <div className="reviewerName">{review.User.firstName}</div>
                         <div className="reviewDate">{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
                         <div>{review.review}</div>
@@ -54,8 +58,11 @@ const ManageReviews = () => {
                             />
                             )}
                         </div>
-                    </div>
+                    
+                </li>
             ))}
+            </ol>
+            </div>
         </div>
     );
 }

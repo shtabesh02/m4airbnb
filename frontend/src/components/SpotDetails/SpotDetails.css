@@ -1,7 +1,7 @@
 .spotDetailContainer{
     display: flex;
     flex-direction: column;
-    justify-content:left;
+    
 
     margin: 5px;
     padding: 5px;
@@ -10,14 +10,17 @@
 .spotinformation{
   display: flex;
   flex-direction: column;
-  justify-content: left;
+  /* justify-content: left; */
+  /* align-items:start; */
   padding: 5px;
-  
 }
+
 .spotDetail {
-    display: flex;
-    justify-content: space-between;
-  }
+  display: flex;
+  justify-content: space-between;
+  /* justify-content: center; */
+}
+
   
   .spotDetail .leftImage{
     width: 50%;
@@ -34,25 +37,50 @@
     padding: 5px;
     border-radius: 20px 0px 0px 20px;
   }
-  .rightImages{
+  /* .rightImages{
     width: 50%;
  
     display: flex;
     justify-content:right;
     flex-wrap: wrap;
+  } */
+
+
+  .rightImages{
+
+ 
+    display: grid;
+    grid-template-areas:
+    "tl tr"
+    "bl br";
+
+  }
+
+  .tl {
+    grid-area: tl;
+  }
+  .tr {
+    grid-area: tr;
+  }
+  .bl {
+    grid-area: bl;
+  }
+  .br {
+    grid-area: br;
   }
   
   .rightImages img{
-    width: 330px;
+    width: 290px;
     height: 220px;
     padding: 5px;
+    /* flex: 1; */
   }
 
   .rightImages .tr{
     border-top-right-radius: 20px;
   }
 
-  .rightImages .bl{
+  .rightImages .br{
     border-bottom-right-radius: 20px;
   }
 
@@ -74,6 +102,7 @@
     margin: 5px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
 
   .callOutInfo .spotdetailInfoCallout{
@@ -84,9 +113,25 @@
 
   .callOutInfo .reserveIt{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     padding: 5px;
   }
+
+  .spotdetail-reserve-button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 5px 20px;
+    /* padding-left: 10px; */
+    border: none;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    text-decoration: none;
+    box-shadow: 2px 4px;
+  }
+
   .horizontal-line {
     border: none;
     height: 1px;
@@ -94,4 +139,17 @@
     margin: 20px 0; /* Adjust margin as needed */
   }
 
-  
+  @media screen and (min-width: 1441px) {
+    .spotDetailContainer{
+      width: 1440px;
+      display: flex;
+      justify-content: center;
+      
+    }
+
+    body{
+      display: flex;
+      justify-content: center;
+      /* align-items: center; */
+    }
+  }

@@ -6,6 +6,7 @@ import LoginFormModal from '../LoginFormModal/LoginFormModal';
 //import SignupFormModal from '../SignUpFormModal/SignUpFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
 import { useNavigate } from 'react-router-dom'
+import './ProfileButton.css'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -54,7 +55,10 @@ function ProfileButton({ user }) {
   return (
     <>
       <button className='toggle-button' onClick={toggleMenu}>
-        <i className="fas fa-user-circle" />
+      <div className="profileIcon">
+      <i className="fa-solid fa-bars"></i>
+      <i className="fas fa-user-circle fa-2x"/>
+      </div>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (

@@ -5,15 +5,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #ffffff; /* Update with your preferred background color */
-    color: #000000; /* Update with your preferred text color */
-    /* cursor: pointer; */
+    padding: 1rem 4rem;
+    background-color: #ffffff;
+    color: #000000;
     border-bottom: 1px solid #bba2a2;;
   }
   
   .logo {
-    width: 50px; /* Update with your preferred logo width */
+    width: 50px;
     height: auto;
   }
   
@@ -21,14 +20,10 @@
     display: flex;
     align-items: center;
     position: relative;
-    /* background-color: #000000; */
-    /* width: 100px;
-    height: 100px; */
-    /* cursor: pointer; */
   }
   
   .navBar-create-new-button {
-    background-color: #4CAF50; /* Update with your preferred button color */
+    background-color: #4CAF50;
     color: #fff;
     padding: 8px 16px;
     border: none;
@@ -49,7 +44,7 @@
     position: absolute;
     /* top: 100%; */
     right: 0;
-    background-color: #ffffff; /* Update with your preferred dropdown background color */
+    background-color: #ffffff;
     padding: 5px;
     margin: 5px;
     list-style: none;
@@ -74,21 +69,18 @@
     margin: 5px;
     width: max-content;
   }
-  /* Dropdown Styles */
+
   .dropdown-list {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #333; /* Update with your preferred background color */
+    background-color: #333;
     padding: 10px;
     list-style: none;
-    /* cursor: pointer; */
+
   }
   
-  /* .navBar:hover .dropdown-list {
-    display: block;
-  } */
   
 
   .hidden{
@@ -97,4 +89,31 @@
 
 
 
-  
+  .skybnb-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+.skybnb-logo b{
+    text-decoration: none;
+    color: red;
+    /* font-family: 'Press Start 2P', system-ui; */
+    font-family: 'Sansita', sans-serif;
+    position: relative;
+    left: -15px;
+}
+
+.skybnb-logo i{
+    color: rgb(255, 0, 0);
+    /* margin-right: 5px; */
+    
+}
+
+.skybnb-logo .material-symbols-outlined{
+  width: 40px;
+  border: 1px solid;
+}

@@ -3,18 +3,18 @@ import { useEffect } from 'react';
 import { loadReviewsfromDB } from "../../store/review";
 import { loadSpotDetailsfromDB, loadSpotsfromDB } from '../../store/spot';
 import './Reviews.css';
-import OpenModalButton from  '../OpenModalButton/OpenModalButton'
+import OpenModalButton from '../OpenModalButton/OpenModalButton'
 import DeleteReviewModal from '../DeleteReview/DeleteReviewModal';
 
-const Reviews = ({spotId, setAlreadyReviewed}) => {
+const Reviews = ({ spotId, setAlreadyReviewed }) => {
 
     const allReviews = useSelector(state => Object.values(state.reviews))
     const reviews = allReviews.filter(review => review.spotId === Number(spotId))
 
     const spotOwnerId = useSelector(state => state.spots[spotId]?.ownerId);
-    
+
     const currentUserId = useSelector(state => state.session.user?.id)
-    
+
     const dispatch = useDispatch();
 
 
@@ -25,12 +25,12 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
         dispatch(loadReviewsfromDB(spotId));
         dispatch(loadSpotDetailsfromDB(spotId));
     }, [dispatch, spotId])
-    
-    useEffect(()=> {
-        if(!spotOwnerId || !spotId){
+
+    useEffect(() => {
+        if (!spotOwnerId || !spotId) {
             dispatch(loadSpotsfromDB());
         }
-    },[spotOwnerId, spotId, dispatch]);
+    }, [spotOwnerId, spotId, dispatch]);
 
 
     // If no reviews is found, and logged in user is not the owner
@@ -42,21 +42,28 @@ const Reviews = ({spotId, setAlreadyReviewed}) => {
     //return the reviews when found
     return (
         <div>
-            {sortedReviews.map(review => (
-                    <div className='reviewContainer' key={review.id}>
-                        <div className='reviewerName'>{review.User.firstName}</div>
-                        <div className='reviewDate'>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
-                        <div>{review.review}</div>
-                        <div>
-                            {currentUserId === review?.User?.id && (
-                            <OpenModalButton
-                                modalComponent={<DeleteReviewModal reviewId={review.id} spotId= {spotId} setAlreadyReviewed={setAlreadyReviewed}/>}
-                                buttonText='Delete'
-                            />
-                            )}
-                        </div>
-                    </div>
-            ))}
+            <div className='reviewContainer'>
+                <ol>
+                    {sortedReviews.map(review => (
+                        <li key={review.id}>
+                            {/* <div className='reviewContainer' key={review.id}> */}
+
+                            <div className='reviewerName'>{review.User.firstName}</div>
+                            <div className='reviewDate'>{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
+                            <div className='review'>{review.review}</div>
+                            <div>
+                                {currentUserId === review?.User?.id && (
+                                    <OpenModalButton
+                                        modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId} setAlreadyReviewed={setAlreadyReviewed} />}
+                                        buttonText='Delete'
+                                    />
+                                )}
+                            </div>
+
+                        </li>
+                    ))}
+                </ol>
+            </div>
         </div>
     )
 };
