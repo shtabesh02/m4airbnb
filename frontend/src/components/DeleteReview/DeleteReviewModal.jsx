@@ -6,7 +6,6 @@ import { deleteReviewfromDB} from '../../store/review';
 
 
 function DeleteReviewModal ({reviewId, setHasReviewed, spotId}) {
-   //console.log(``,reviewId)
    const dispatch = useDispatch();
    const [errors, setErrors] = useState({});
    const { closeModal } = useModal();

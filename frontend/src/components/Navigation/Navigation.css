@@ -117,3 +117,25 @@
   width: 40px;
   border: 1px solid;
 }
+
+.search-spot{
+  display: flex;
+  padding: 5px;
+}
+
+.search-spot > div{
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin: 5px;
+}
+
+.who{
+  display: flex;
+  justify-content: center;
+}
+
+.searchWho{
+  display: flex;
+  align-items: center;
+}
