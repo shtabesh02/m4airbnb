@@ -139,7 +139,7 @@
     margin: 20px 0; /* Adjust margin as needed */
   }
 
-  @media screen and (min-width: 1441px) {
+  /* @media screen and (min-width: 1441px) {
     .spotDetailContainer{
       width: 1440px;
       display: flex;
@@ -150,6 +150,72 @@
     body{
       display: flex;
       justify-content: center;
-      /* align-items: center; */
+    }
+  } */
+
+
+
+  @media screen and (max-width: 767px) {
+    /* Media query for smartphones */
+  
+    .spotDetailContainer {
+      padding: 5; /* Adjust padding as needed */
+      margin: 5; /* Adjust margin as needed */
+      width: 95%; /* Make container full width */
+    }
+  
+    .spotinformation {
+      padding: 10px; /* Add padding to spot information */
+    }
+  
+    .spotDetail{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spotDetail .leftImage{
+      width: 100%;
+    }
+    .leftImage .imgLeft {
+      width: 100%; /* Make left image full width */
+      border-radius: 0; /* Remove border radius */
+      
+    }
+  
+    .rightImages {
+      grid-template-areas: "tl" "tr" "bl" "br"; /* Display images in column-wise layout */
+    }
+  
+    .rightImages .tl,
+    .rightImages .tr,
+    .rightImages .br,
+    .rightImages .bl {
+      width: 100%; /* Make each image fill the container width */
+      height: auto; /* Maintain aspect ratio */
+      border-radius: 0; /* Remove border radius */
+    }
+  
+    .reviewSummaryInfo {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center align items */
+    }
+  
+    .reviewSummaryInfo .hostDetails {
+      width: 100%; /* Make host details full width */
+      margin-bottom: 20px; /* Add bottom margin */
+    }
+  
+    .reviewSummaryInfo .callOutInfo {
+      width: 100%; /* Make call out info full width */
+    }
+  
+    .spotdetail-reserve-button {
+      width: 100%; /* Make reserve button full width */
+    }
+  
+    .horizontal-line {
+      margin: 10px 0; /* Adjust margin as needed */
     }
   }
