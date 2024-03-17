@@ -28,3 +28,7 @@
     border: none;
     background-color: rgb(255, 255, 255);
 }
+
+.profile-dropdown{
+    z-index: 100;
+}
