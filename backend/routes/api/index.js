@@ -312,6 +312,25 @@ router.get(
   }
 );
 
+// -----------------------------------------
+// Get all Spots including their images
+
+router.get('/spots/spotsimages', async (req, res) => {
+  const spotsimages = await Spot.findAll({
+    attributes: ['id', 'ownerId'],
+        include: [
+          { model: SpotImage, attributes: ['url', 'preview'] },
+          { model: User, as: 'Owner', attributes: [] }
+        ],
+        group: ['Spot.id', 'SpotImages.id'],
+        subQuery: false,
+  });
+
+  res.status(200).json(spotsimages)
+
+})
+// -----------------------------------------
+
 // Get all Spots
 // Add Query Filters to Get All Spots
 router.get('/spots', async (req, res) => {
@@ -493,7 +512,9 @@ router.get('/spots', async (req, res) => {
     const spots = await Spot.findAll({
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name',
         'description', 'price', 'createdAt', 'updatedAt',
-        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']],
+        // [Sequelize.literal('ROUND(AVG(Reviews.stars), 2)'), 'avgRating']],
+     
+        [Sequelize.fn('AVG', Sequelize.col('Reviews.stars')), 'avgRating']], // works fine but need to set the decimal
 
       include: [
         { model: Review, attributes: [] },

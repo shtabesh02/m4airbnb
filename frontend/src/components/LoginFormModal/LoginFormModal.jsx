@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
-//import { Navigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
 
@@ -26,7 +25,6 @@ function LoginFormModal() {
     });
   };
 
-  //create a hanlder to log in demo user when demo button is clicked.
   const handleDemoLogin = (e) => {
     e.preventDefault();
     return dispatch(sessionActions.login({ credential: 'adanesh', password: 'password2' }))

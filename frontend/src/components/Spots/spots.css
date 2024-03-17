@@ -1,28 +1,27 @@
-
 .theSpotContainer {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: flex !important;
+  justify-content: center !important;
   padding: 1rem 3rem;
-  gap: 1rem;
+  row-gap: 3rem !important;
 }
 
-.individualSpotContainer{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border: none;
+
+
+.individualSpotContainer{ 
+  display: flex !important;
+  position: relative !important;
   border-radius: 1rem;
   margin: 5px;
   padding: 5px;
   width: 290px;
   height: auto;
-  object-fit: cover;
+  color: aquamarine;
 }
 
 .spotPhoto img{
   border-radius: 1rem;
   width: 290px;
+  height: 200px;
 }
 
 .spotInfo{
@@ -38,7 +37,64 @@
 }
 
 .nav-link{
-  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+.mySwiper{
+  z-index: 0;
+  display: flex;
+  
+}
+
+.swiper-button-next {
+  display: none !important;
+
+  
+}
+
+.swiper-button-prev {
+  display: none !important;
+
+  
+}
+
+.spotPhoto:hover .swiper-button-prev{
+  display: flex !important;
+
+  background-image: url("prev.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: box-shadow 0.5s;
+  border-radius: 50px;
+  color: bisque;
+}
+.spotPhoto:hover .swiper-button-next{
+  display: flex !important;
+  background-image: url("next.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: box-shadow 0.5s;
+  border-radius: 50px;
+  color: bisque;
+}
+.swiper-button-next:hover{
+  box-shadow: 0 0 20px rgba(154, 228, 6, 0.8);
+}
+
+.swiper-button-prev:hover{
+  box-shadow: 0 0 2px rgba(6, 113, 228, 0.8);
+  color: antiquewhite;
+}
+
+.swiper-button-next::after {
+  display: none;
+}
+.swiper-button-prev::after {
+  display: none;
 }
 
 

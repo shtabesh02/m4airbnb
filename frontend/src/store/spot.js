@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 
 const LOAD_SPOTS = 'spot/load_spots';
+
 const LOAD_SPOT_DETAILS = 'spot/LOAD_SPOT_DETAILS';
 const INSERT_IMAGE = '/spot/INSERT_IMAGE';
 const DELETE_SPOT = 'spot/DELETE_SPOT';

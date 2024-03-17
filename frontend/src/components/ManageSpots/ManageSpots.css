@@ -15,14 +15,15 @@
     border-radius: 1rem;
     margin: 5px;
     padding: 5px;
-    width: 290px;
-    height: auto;
+    /* width: 290px; */
+    height: 200px;
     object-fit: cover;
   }
   
   .spotPhoto img{
     border-radius: 1rem;
     width: 290px;
+    height: 200px;
   }
   
   .spotInfo{
