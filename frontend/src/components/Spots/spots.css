@@ -4,9 +4,8 @@
   padding: 1rem 3rem;
   row-gap: 3rem !important;
   position: relative;
-  z-index: -1;
+  z-index: 0;
 }
-
 
 
 .individualSpotContainer{ 
@@ -106,6 +105,6 @@
     display: flex;
     justify-content: center;
     position: relative;
-    z-index: -1;
+    z-index: 0;
   }
 }
