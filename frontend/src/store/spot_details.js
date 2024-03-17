@@ -19,7 +19,7 @@ export const loadSpotDetailsfromDB = (spotId) => async (dispatch) => {
     // console.log('from thunk: ', response);
     if(response.ok){
         const data = await response.json();
-        console.log('Spot Details from thunk: ', data)
+        // console.log('Spot Details from thunk: ', data)
         dispatch(loadSpotDetails(data));
         return data
     }else{
@@ -33,7 +33,7 @@ const initialState = {};
 const spotDetailsReducer = (state = initialState, action) => {
     // console.log('spot details called...');
     const newState = {...state};
-    console.log('spot details called to change state... ', newState);
+    // console.log('spot details called to change state... ', newState);
     switch(action.type){
         case LOAD_SPOT_DETAILS: {
             newState[action.payload.id] = {...newState[action.payload.id], ...action.payload}

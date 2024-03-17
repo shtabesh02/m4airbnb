@@ -1,4 +1,7 @@
 // ---------------------------------------
+
+import { csrfFetch } from "./csrf";
+
 // spots and their images
 const LOAD_SPOTSIMAGES = 'spot/load_spots_images';
 // Regular action to load the spots images
@@ -9,14 +12,13 @@ const spotsimages = (spots_images) => {
     }
 }
 
-
 // Thunk action to load the spots
 export const loadSpotsImagesFromDB = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots/spotsimages');
-    console.log('spotsimages loaded: ', response)
+    // console.log('spotsimages loaded: ', response)
     if(response.ok){
         const data = await response.json();
-        console.log('spotsimages from thunk: ', data)
+        // console.log('spotsimages from thunk: ', data)
         dispatch(spotsimages(data));
         // return data;
     }else{

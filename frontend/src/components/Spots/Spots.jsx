@@ -41,7 +41,7 @@ const Spots = () => {
     // const [loadSpot, setSpotImagesLoaded] = useState(false);
     const allSpots = useSelector(state => Object.values(state.spots));
     const spotsimages = useSelector(state => (state.spotsimages))
-    console.log('spotsimages: ', spotsimages)
+    // console.log('spotsimages: ', spotsimages)
     // console.log('All spots from Spots.jsx: ', allSpots);
     const dispatch = useDispatch();
 
