@@ -65,7 +65,7 @@
 .spotPhoto:hover .swiper-button-prev{
   display: flex !important;
 
-  background-image: url("prev.svg");
+  background-image: url("/prev.svg");
   background-repeat: no-repeat;
   background-position: center;
   transition: box-shadow 0.5s;
@@ -74,7 +74,7 @@
 }
 .spotPhoto:hover .swiper-button-next{
   display: flex !important;
-  background-image: url("next.svg");
+  background-image: url("/next.svg");
   background-repeat: no-repeat;
   background-position: center;
   transition: box-shadow 0.5s;

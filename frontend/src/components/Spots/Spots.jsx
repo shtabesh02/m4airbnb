@@ -16,33 +16,14 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import './styles.css';
 
 // import required modules
 import { Keyboard, Pagination, Navigation } from 'swiper/modules';
-
 // ---------------------------------
 
-
-
-// import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/effect-fade'
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-import './styles.css';
-
-// import { Navigation, EffectFade, Pagination } from 'swiper/modules';
-
-
 const Spots = () => {
-    // const [spotImages, setSpotImages] = useState([]);
-    // const [loadSpot, setSpotImagesLoaded] = useState(false);
     const allSpots = useSelector(state => Object.values(state.spots));
     const spotsimages = useSelector(state => (state.spotsimages))
-    // console.log('spotsimages: ', spotsimages)
-    // console.log('All spots from Spots.jsx: ', allSpots);
     const dispatch = useDispatch();
 
 
@@ -62,13 +43,12 @@ const Spots = () => {
                 {allSpots.map((spot) => (
                     <div key={spot.id} className='individualSpotContainer'>
                         <NavLink className="nav-link" to={`/spots/${spot.id}`}>
-
                             <div className="spotPhoto">
                                 <Swiper
                                     slidesPerView={1}
                                     spaceBetween={30}
                                     keyboard={{
-                                        enabled: true,
+                                        enabled: false,
                                     }}
                                     pagination={{
                                         clickable: true,
@@ -87,9 +67,6 @@ const Spots = () => {
                                         ) : null
                                     ))}
                                 </Swiper>
-
-
-
                             </div>
                             <div className="spotInfo">
                                 <div className="city-and-rating">
@@ -106,46 +83,6 @@ const Spots = () => {
                                 </div>
                             </div>
                         </NavLink>
-                        {/* <NavLink className="nav-link" to={`/spots/${spot.id}`}>
-                            <div className="spotPhoto">
-                                {
-                                    spotImages[index] ? (
-                                        <Swiper
-                                            spaceBetween={30}
-                                            effect={'fade'}
-                                            navigation={true}
-                                            pagination={{
-                                                clickable: true,
-                                            }}
-                                            modules={[EffectFade, Navigation, Pagination]}
-                                            className="mySwiper">
-                                            {
-                                                spotImages[index].map((imageUrl, imageIndex) => (
-                                                    <SwiperSlide key={imageIndex}>
-                                                        <img src={imageUrl} alt={spot.name} title={spot.name} />
-                                                    </SwiperSlide>
-                                                ))
-                                            }
-                                        </Swiper>
-                                    ) : (
-                                        <img src={spot.previewImage} alt={spot.name} title={spot.name} />
-                                        )
-                                    }
-                            </div>
-                            <div className="spotInfo">
-                                <div className="city-and-rating">
-                                    <div>
-                                        {spot.city}, {spot.state}
-                                    </div>
-                                    <div>
-                                        <i className='fa-solid fa-star' />{spot.avgRating ? Number.parseFloat(spot.avgRating).toFixed(1) : 'NEW'}
-                                    </div>
-                                </div>
-                                <div className="price">
-                                    ${spot.price} night
-                                </div>
-                            </div>
-                        </NavLink> */}
                     </div>
                 ))}
             </div>
