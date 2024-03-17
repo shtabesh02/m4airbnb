@@ -39,7 +39,7 @@ const Spots = () => {
     // }
 
     return (
-        <div>
+
             <div className='theSpotContainer'>
                 {allSpots.map((spot) => (
                     <div key={spot.id} className='individualSpotContainer'>
@@ -87,7 +87,7 @@ const Spots = () => {
                     </div>
                 ))}
             </div>
-        </div>
+
     );
 }
 
