@@ -6,6 +6,7 @@ import { loadSpotsImagesFromDB } from '../../store/spotsimages';
 import { NavLink } from 'react-router-dom';
 import './spots.css';
 
+
 // ---------------------------------
 // Swiper section
 import { Swiper, SwiperSlide } from 'swiper/react';

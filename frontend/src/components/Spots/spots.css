@@ -3,6 +3,8 @@
   justify-content: center !important;
   padding: 1rem 3rem;
   row-gap: 3rem !important;
+  position: relative;
+  z-index: 0;
 }
 
 
@@ -43,12 +45,12 @@
 
 
 
-
+/* 
 .mySwiper{
   z-index: 0;
   display: flex;
   
-}
+} */
 
 .swiper-button-next {
   display: none !important;
