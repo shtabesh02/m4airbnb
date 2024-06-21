@@ -8,7 +8,7 @@ import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
 import './ManageReviews.css';
 
 const ManageReviews = () => {
-    
+
 
     const currentUser = useSelector(state => state.session.user.id);
     // console.log('currentUser: ', currentUser);
@@ -29,39 +29,39 @@ const ManageReviews = () => {
     //     navigate(`/reviews/${reviewId}`)
     // }
 
-    return(
+    return (
         <div className='reviewContainer'>
             <h1>Manage Reviews</h1>
             <div >
-            <ol>
+                <ol>
 
-            {sortedReviews.map(review => (
-                <li key={review.id}>
-                    
-                        <div className="reviewerName">{review.User.firstName}</div>
-                        <div className="reviewDate">{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
-                        <div>{review.review}</div>
-                        <div>
+                    {sortedReviews.map(review => (
+                        <li key={review.id}>
 
-                        {(currentUser && currentUser?.id !== review?.User?.id) && (
-                        <OpenModalButton
-                            modalComponent={<UpdateReviewModal spotId={review.spotId} reviewId={review.id}/>}
-                            buttonText='Update'
-                        />
-                    )}
+                            <div className="reviewerName">{review.User.firstName}</div>
+                            <div className="reviewDate">{new Date(review.createdAt).toLocaleString('en-US', { month: 'long', year: 'numeric' })}</div>
+                            <div>{review.review}</div>
+                            <div>
 
-                            {currentUser === review?.User?.id && (
-                                
-                            <OpenModalButton
-                                modalComponent={<DeleteReviewModal reviewId={review.id} />}
-                                buttonText='Delete'
-                            />
-                            )}
-                        </div>
-                    
-                </li>
-            ))}
-            </ol>
+                                {(currentUser && currentUser?.id !== review?.User?.id) && (
+                                    <OpenModalButton
+                                        modalComponent={<UpdateReviewModal spotId={review.spotId} reviewId={review.id} />}
+                                        buttonText='Update'
+                                    />
+                                )}
+
+                                {currentUser === review?.User?.id && (
+
+                                    <OpenModalButton
+                                        modalComponent={<DeleteReviewModal reviewId={review.id} />}
+                                        buttonText='Delete'
+                                    />
+                                )}
+                            </div>
+
+                        </li>
+                    ))}
+                </ol>
             </div>
         </div>
     );
